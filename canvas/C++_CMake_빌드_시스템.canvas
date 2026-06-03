@@ -10,9 +10,9 @@
       "height": 640
     },
     {
-      "id": "cmake",
+      "id": "problem",
       "type": "text",
-      "text": "CMake = 크로스 플랫폼 빌드 생성기",
+      "text": "C++엔 표준 빌드/패키지 시스템이 없음",
       "x": 600,
       "y": 0,
       "width": 460,
@@ -20,9 +20,9 @@
       "color": "6"
     },
     {
-      "id": "cmakelists",
+      "id": "cmake",
       "type": "text",
-      "text": "CMakeLists.txt = 빌드 설정 스크립트",
+      "text": "CMake = 빌드 시스템 생성기 (컴파일러 아님)",
       "x": 600,
       "y": 220,
       "width": 460,
@@ -30,9 +30,9 @@
       "color": "6"
     },
     {
-      "id": "generator",
+      "id": "cmakelists",
       "type": "text",
-      "text": "Generator = Makefile/Ninja/VS 등 생성",
+      "text": "CMakeLists.txt = 타겟과 의존성을 선언하는 스크립트",
       "x": 600,
       "y": 440,
       "width": 460,
@@ -42,7 +42,7 @@
     {
       "id": "target",
       "type": "text",
-      "text": "Target = 실행파일/라이브러리 단위",
+      "text": "Target = 실행파일/라이브러리, 모든 설정의 단위",
       "x": 600,
       "y": 660,
       "width": 460,
@@ -50,9 +50,19 @@
       "color": "6"
     },
     {
+      "id": "propagation",
+      "type": "text",
+      "text": "PUBLIC/PRIVATE/INTERFACE = 의존성 전파 범위",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
       "id": "s1",
       "type": "text",
-      "text": "1. CMakeLists.txt 작성 (project, target 정의)",
+      "text": "1. Configure: 스크립트 해석 + 컴파일러 탐지",
       "x": 0,
       "y": 0,
       "width": 460,
@@ -62,7 +72,7 @@
     {
       "id": "s2",
       "type": "text",
-      "text": "2. cmake -S . -B build (구성 단계)",
+      "text": "2. 인메모리 타겟 그래프(DAG) 구성 + 속성 전파",
       "x": 0,
       "y": 220,
       "width": 460,
@@ -72,7 +82,7 @@
     {
       "id": "s3",
       "type": "text",
-      "text": "3. 빌드 시스템 파일 생성 (Makefile/Ninja)",
+      "text": "3. Generate: 그래프를 ninja/make 파일로 번역",
       "x": 0,
       "y": 440,
       "width": 460,
@@ -82,7 +92,7 @@
     {
       "id": "s4",
       "type": "text",
-      "text": "4. cmake --build build (빌드 단계)",
+      "text": "4. Build: ninja/make가 실제 컴파일 + 링크",
       "x": 0,
       "y": 660,
       "width": 460,
@@ -90,19 +100,19 @@
       "color": "4"
     },
     {
-      "id": "s5",
+      "id": "cache",
       "type": "text",
-      "text": "5. 컴파일러가 실행파일/라이브러리 생성",
-      "x": 0,
-      "y": 880,
+      "text": "CMakeCache.txt = configure 결과 저장 (재실행시 스킵)",
+      "x": 600,
+      "y": 1100,
       "width": 460,
       "height": 160,
-      "color": "4"
+      "color": "6"
     },
     {
-      "id": "ex_exe",
+      "id": "example_graph",
       "type": "text",
-      "text": "예: add_executable(app main.cpp)",
+      "text": "예: app ──link──▶ mylib (PUBLIC define X가 app으로 흘러감)",
       "x": 1200,
       "y": 0,
       "width": 460,
@@ -110,21 +120,11 @@
       "color": "3"
     },
     {
-      "id": "ex_lib",
+      "id": "example_debug",
       "type": "text",
-      "text": "예: target_link_libraries(app PRIVATE fmt)",
+      "text": "예: configure 에러 vs build 에러 구분으로 디버깅",
       "x": 1200,
       "y": 220,
-      "width": 460,
-      "height": 160,
-      "color": "3"
-    },
-    {
-      "id": "ex_cli",
-      "type": "text",
-      "text": "예: cmake -B build && cmake --build build",
-      "x": 1200,
-      "y": 440,
       "width": 460,
       "height": 160,
       "color": "3"
@@ -133,87 +133,94 @@
   "edges": [
     {
       "id": "e0",
+      "fromNode": "problem",
+      "toNode": "cmake",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "해결책"
+    },
+    {
+      "id": "e1",
       "fromNode": "cmake",
       "toNode": "cmakelists",
       "fromSide": "bottom",
       "toSide": "top",
-      "label": "읽어들임"
+      "label": "입력"
     },
     {
-      "id": "e1",
+      "id": "e2",
       "fromNode": "cmakelists",
       "toNode": "target",
       "fromSide": "bottom",
       "toSide": "top",
-      "label": "정의"
+      "label": "선언"
     },
     {
-      "id": "e2",
+      "id": "e3",
+      "fromNode": "target",
+      "toNode": "propagation",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "속성 부착"
+    },
+    {
+      "id": "e4",
+      "fromNode": "cmakelists",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e5",
       "fromNode": "s1",
       "toNode": "s2",
       "fromSide": "bottom",
       "toSide": "top"
     },
     {
-      "id": "e3",
+      "id": "e6",
       "fromNode": "s2",
       "toNode": "s3",
       "fromSide": "bottom",
       "toSide": "top"
     },
     {
-      "id": "e4",
+      "id": "e7",
       "fromNode": "s3",
       "toNode": "s4",
       "fromSide": "bottom",
       "toSide": "top"
     },
     {
-      "id": "e5",
-      "fromNode": "s4",
-      "toNode": "s5",
-      "fromSide": "bottom",
-      "toSide": "top"
-    },
-    {
-      "id": "e6",
-      "fromNode": "generator",
-      "toNode": "s3",
-      "fromSide": "left",
-      "toSide": "right",
-      "label": "선택에 따라"
-    },
-    {
-      "id": "e7",
-      "fromNode": "cmake",
-      "toNode": "generator",
-      "fromSide": "bottom",
-      "toSide": "top",
-      "label": "사용"
-    },
-    {
       "id": "e8",
-      "fromNode": "ex_exe",
-      "toNode": "cmakelists",
-      "fromSide": "left",
-      "toSide": "right",
-      "label": "작성 예"
+      "fromNode": "s1",
+      "toNode": "cache",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "결과 저장"
     },
     {
       "id": "e9",
-      "fromNode": "ex_lib",
-      "toNode": "target",
-      "fromSide": "left",
-      "toSide": "right",
-      "label": "의존성 추가"
+      "fromNode": "propagation",
+      "toNode": "example_graph",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "구체화"
     },
     {
       "id": "e10",
-      "fromNode": "ex_cli",
-      "toNode": "s2",
-      "fromSide": "left",
-      "toSide": "right",
-      "label": "명령 예"
+      "fromNode": "s2",
+      "toNode": "example_graph",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e11",
+      "fromNode": "s4",
+      "toNode": "example_debug",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "단계 구분"
     }
   ]
 }
