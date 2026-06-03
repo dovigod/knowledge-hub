@@ -1,0 +1,229 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/gRPC_개요와_장단점.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "compare",
+      "type": "text",
+      "text": "비교 대상: gRPC(HTTP/2+Protobuf) vs REST(HTTP/1.1+JSON)",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "rpc",
+      "type": "text",
+      "text": "RPC = 네트워크 호출을 원격 함수처럼 다루기",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "proto",
+      "type": "text",
+      "text": ".proto 계약 → 클라/서버 코드 자동 생성",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "fast1",
+      "type": "text",
+      "text": "빠른 이유 1: Protobuf 바이너리 직렬화",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ex_size",
+      "type": "text",
+      "text": "예: JSON 43B vs Protobuf ~20B (태그+varint)",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "fast2",
+      "type": "text",
+      "text": "빠른 이유 2: HTTP/2 멀티플렉싱 + 헤더 압축",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ex_mux",
+      "type": "text",
+      "text": "예: 한 TCP 연결에 여러 스트림 동시 처리",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "fast3",
+      "type": "text",
+      "text": "빠른 이유 3: 4가지 스트리밍 패턴 내장",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "reliable",
+      "type": "text",
+      "text": "안정성: 강타입 계약 + 데드라인 전파 + 내장 기능",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ex_contract",
+      "type": "text",
+      "text": "예: .proto 불일치는 런타임 아닌 컴파일 에러",
+      "x": 1200,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "tradeoff",
+      "type": "text",
+      "text": "한계: 브라우저 미지원, 디버깅 불편, 공개 API 부적합",
+      "x": 600,
+      "y": 1320,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "choose",
+      "type": "text",
+      "text": "선택: 내부 서비스↔서비스 → gRPC / 브라우저·공개 API → REST",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "compare",
+      "toNode": "rpc",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e1",
+      "fromNode": "rpc",
+      "toNode": "proto",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "구현 방식"
+    },
+    {
+      "id": "e2",
+      "fromNode": "proto",
+      "toNode": "fast1",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e3",
+      "fromNode": "fast1",
+      "toNode": "ex_size",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e4",
+      "fromNode": "proto",
+      "toNode": "fast2",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e5",
+      "fromNode": "fast2",
+      "toNode": "ex_mux",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e6",
+      "fromNode": "proto",
+      "toNode": "fast3",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e7",
+      "fromNode": "fast1",
+      "toNode": "reliable",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "더해서"
+    },
+    {
+      "id": "e8",
+      "fromNode": "fast2",
+      "toNode": "reliable",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e9",
+      "fromNode": "fast3",
+      "toNode": "reliable",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e10",
+      "fromNode": "reliable",
+      "toNode": "ex_contract",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e11",
+      "fromNode": "reliable",
+      "toNode": "tradeoff",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "하지만"
+    },
+    {
+      "id": "e12",
+      "fromNode": "tradeoff",
+      "toNode": "choose",
+      "fromSide": "left",
+      "toSide": "right"
+    }
+  ]
+}
