@@ -1,0 +1,219 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/C++_CMake_빌드_시스템.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "cmake",
+      "type": "text",
+      "text": "CMake = 크로스 플랫폼 빌드 생성기",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "cmakelists",
+      "type": "text",
+      "text": "CMakeLists.txt = 빌드 설정 스크립트",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "generator",
+      "type": "text",
+      "text": "Generator = Makefile/Ninja/VS 등 생성",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "target",
+      "type": "text",
+      "text": "Target = 실행파일/라이브러리 단위",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. CMakeLists.txt 작성 (project, target 정의)",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. cmake -S . -B build (구성 단계)",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. 빌드 시스템 파일 생성 (Makefile/Ninja)",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. cmake --build build (빌드 단계)",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "5. 컴파일러가 실행파일/라이브러리 생성",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "ex_exe",
+      "type": "text",
+      "text": "예: add_executable(app main.cpp)",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "ex_lib",
+      "type": "text",
+      "text": "예: target_link_libraries(app PRIVATE fmt)",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "ex_cli",
+      "type": "text",
+      "text": "예: cmake -B build && cmake --build build",
+      "x": 1200,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "cmake",
+      "toNode": "cmakelists",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "읽어들임"
+    },
+    {
+      "id": "e1",
+      "fromNode": "cmakelists",
+      "toNode": "target",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "정의"
+    },
+    {
+      "id": "e2",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "generator",
+      "toNode": "s3",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "선택에 따라"
+    },
+    {
+      "id": "e7",
+      "fromNode": "cmake",
+      "toNode": "generator",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "사용"
+    },
+    {
+      "id": "e8",
+      "fromNode": "ex_exe",
+      "toNode": "cmakelists",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "작성 예"
+    },
+    {
+      "id": "e9",
+      "fromNode": "ex_lib",
+      "toNode": "target",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "의존성 추가"
+    },
+    {
+      "id": "e10",
+      "fromNode": "ex_cli",
+      "toNode": "s2",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "명령 예"
+    }
+  ]
+}
