@@ -1,0 +1,166 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/HTTP_vs_gRPC_vs_MQ_비교.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "http",
+      "type": "text",
+      "text": "HTTP — 외부 API 동기 통신",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "grpc",
+      "type": "text",
+      "text": "gRPC — 내부 서비스 간 고성능 동기 통신",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "mq",
+      "type": "text",
+      "text": "MQ — 비동기 이벤트 전달, 결합도 감소",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "kafka",
+      "type": "text",
+      "text": "Kafka — 대용량 스트리밍 MQ",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "rabbitmq",
+      "type": "text",
+      "text": "RabbitMQ — 범용 메시지 브로커",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "sqs",
+      "type": "text",
+      "text": "SQS — AWS 관리형 큐",
+      "x": 1200,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "ext-api",
+      "type": "text",
+      "text": "외부 클라이언트 ↔ 서버 REST 호출",
+      "x": 1200,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "internal",
+      "type": "text",
+      "text": "마이크로서비스 간 저지연 RPC",
+      "x": 1200,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "combo",
+      "type": "text",
+      "text": "실제 대규모 시스템: HTTP + gRPC + MQ 혼용",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "http",
+      "toNode": "ext-api",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "사용처"
+    },
+    {
+      "id": "e1",
+      "fromNode": "grpc",
+      "toNode": "internal",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "사용처"
+    },
+    {
+      "id": "e2",
+      "fromNode": "mq",
+      "toNode": "kafka",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "구현체"
+    },
+    {
+      "id": "e3",
+      "fromNode": "mq",
+      "toNode": "rabbitmq",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "구현체"
+    },
+    {
+      "id": "e4",
+      "fromNode": "mq",
+      "toNode": "sqs",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "구현체"
+    },
+    {
+      "id": "e5",
+      "fromNode": "http",
+      "toNode": "combo",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e6",
+      "fromNode": "grpc",
+      "toNode": "combo",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e7",
+      "fromNode": "mq",
+      "toNode": "combo",
+      "fromSide": "left",
+      "toSide": "right"
+    }
+  ]
+}
