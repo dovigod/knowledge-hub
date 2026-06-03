@@ -5,13 +5,14 @@ aliases:
   - Redis
   - redis
   - redis-server
-updated_at: '2026-06-03T10:12:01.583Z'
+updated_at: '2026-06-03T10:12:33.242Z'
 summary: >-
   In-memory key-value data store used as a cache, database, and message broker
   with rich data structures and atomic single-threaded execution.
 sources:
   - 019e8cae-3d03-76e8-8213-83715aec185d
   - 019e8cf5-a947-70fe-8a72-b2a2fcda81aa
+  - 019e8cf7-f7e2-72c3-8125-d8541b33763c
 ---
 <!-- ⚠️  Generated from .kh.db by `kh sync`. Hand edits are detected and staged under _proposals/manual_edit/ on the next sync. -->
 # Redis
@@ -50,3 +51,4 @@ Redis는 인메모리 데이터 저장소로, 캐시·데이터베이스·메시
 
 - [[raw/conversations/019e8cae-3d03-76e8-8213-83715aec185d|019e8cae-3d03-76e8-8213-83715aec185d]]
 - [[raw/conversations/019e8cf5-a947-70fe-8a72-b2a2fcda81aa|019e8cf5-a947-70fe-8a72-b2a2fcda81aa]]
+- [[raw/conversations/019e8cf7-f7e2-72c3-8125-d8541b33763c|019e8cf7-f7e2-72c3-8125-d8541b33763c]]
