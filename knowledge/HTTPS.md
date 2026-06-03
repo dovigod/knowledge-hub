@@ -2,21 +2,25 @@
 id: 019e8ce6-1c0a-75ee-acfc-9c5397c5635a
 name: HTTPS
 aliases:
+  - HTTP
   - HTTP Secure
   - HTTP over SSL
   - HTTP over TLS
   - HTTPS
   - HyperText Transfer Protocol Secure
+  - REST over HTTP
   - SSL
   - SSL/TLS
   - TLS
   - Transport Layer Security
-updated_at: '2026-06-03T13:34:11.692Z'
+  - http
+updated_at: '2026-06-03T13:37:19.093Z'
 summary: 'HTTP over TLS — the standard for encrypted, authenticated web traffic.'
 sources:
   - 019e8ce5-afa5-74be-8636-3900cef4dbf2
   - 019e8d8e-31db-70ae-a1a5-4073d8b737a5
   - 019e8daf-09b5-7403-af7c-3149b422f8c2
+  - 019e8db1-624f-73be-ab60-735be949b701
 ---
 <!-- ⚠️  Generated from .kh.db by `kh sync`. Hand edits are detected and staged under _proposals/manual_edit/ on the next sync. -->
 # HTTPS
@@ -36,6 +40,7 @@ The same "plain protocol + TLS wrapper" pattern appears across the ecosystem: `h
 - Server identity is established by an X.509 certificate signed by a trusted CA; the client validates the chain and the hostname before sending any application data.
 - The `s`-suffixed URL scheme convention (`https://`, `wss://`, `rediss://`) is an explicit signal to clients that TLS must be used — not just an optional upgrade. Managed cloud services (e.g. managed Redis) typically require the TLS variant.
 - Self-signed or internal CA environments often need client-side tweaks (e.g. `rejectUnauthorized: false` in Node.js clients) — disable certificate validation only in trusted networks.
+- HTTPS is one transport choice among several in distributed systems: HTTP/HTTPS for external synchronous APIs, [[gRPC]] (typically over TLS via HTTP/2) for internal high-performance synchronous calls, and [[Message Queue]] systems (Kafka, RabbitMQ, SQS) for asynchronous event delivery. TLS is orthogonal to the communication pattern — each of these has its own secure-transport variant.
 
 ## Examples
 
@@ -50,6 +55,9 @@ The same "plain protocol + TLS wrapper" pattern appears across the ecosystem: `h
 > - `https://host:443` → HTTP over TLS
 > - `redis://host:6379` → plaintext Redis (RESP over TCP)
 > - `rediss://user:password@host:6380/0` → Redis over TLS (typical port 6380)
+
+> [!tip] HTTPS vs gRPC vs MQ in real systems
+> Large-scale systems usually combine all three: HTTPS for public-facing APIs (browsers, partners, mobile), [[gRPC]] for internal service-to-service synchronous calls (strong typing, HTTP/2 multiplexing, lower overhead), and a [[Message Queue]] for asynchronous event flow and service decoupling. Picking one isn't an either/or choice — they answer different questions (sync vs async, external vs internal, request/response vs event).
 
 ---
 
@@ -70,6 +78,7 @@ HTTPS는 HTTP 통신을 TLS로 암호화한 채널로 감싸 기밀성(confident
 - 서버의 정체성은 신뢰된 CA가 서명한 X.509 인증서로 증명되며, 클라이언트는 애플리케이션 데이터를 보내기 전에 인증서 체인과 호스트명을 검증한다.
 - `s`가 붙은 URL 스킴 관습(`https://`, `wss://`, `rediss://`)은 단순한 업그레이드 힌트가 아니라 "TLS를 반드시 사용하라"는 명시적 신호다. 클라우드 매니지드 서비스(예: managed Redis)에서는 사실상 TLS 변형이 필수인 경우가 많다.
 - self-signed 인증서나 내부 CA 환경에서는 클라이언트 측 옵션 조정(예: Node.js의 `rejectUnauthorized: false`)이 필요할 수 있다. 단, 인증서 검증을 끄는 것은 신뢰된 네트워크에 한해서만 해야 한다.
+- HTTPS는 분산 시스템에서 선택할 수 있는 여러 전송 방식 중 하나다: 외부 동기식 API에는 HTTP/HTTPS, 내부 고성능 동기 호출에는 [[gRPC]](보통 HTTP/2 위의 TLS), 비동기 이벤트 전달에는 [[Message Queue]] 시스템(Kafka, RabbitMQ, SQS). TLS는 통신 패턴과 직교(orthogonal)하며, 각각의 방식 모두 자체적인 보안 전송 변형을 가지고 있다.
 
 ### 예시
 
@@ -85,8 +94,12 @@ HTTPS는 HTTP 통신을 TLS로 암호화한 채널로 감싸 기밀성(confident
 > - `redis://host:6379` → 평문 Redis (RESP over TCP)
 > - `rediss://user:password@host:6380/0` → TLS 위의 Redis (보통 포트 6380)
 
+> [!tip] 실제 시스템에서의 HTTPS vs gRPC vs MQ
+> 대규모 시스템은 보통 세 가지를 함께 쓴다: 외부 노출용 API(브라우저, 파트너, 모바일)에는 HTTPS, 내부 서비스 간 동기 호출에는 [[gRPC]](강타입, HTTP/2 멀티플렉싱, 낮은 오버헤드), 비동기 이벤트 흐름과 서비스 결합도 감소에는 [[Message Queue]]. 셋 중 하나를 고르는 양자택일 문제가 아니라, 각자 다른 질문(동기 vs 비동기, 외부 vs 내부, 요청/응답 vs 이벤트)에 답하는 도구다.
+
 ## Sources
 
 - [[raw/conversations/019e8ce5-afa5-74be-8636-3900cef4dbf2|019e8ce5-afa5-74be-8636-3900cef4dbf2]]
 - [[raw/conversations/019e8d8e-31db-70ae-a1a5-4073d8b737a5|019e8d8e-31db-70ae-a1a5-4073d8b737a5]]
 - [[raw/conversations/019e8daf-09b5-7403-af7c-3149b422f8c2|019e8daf-09b5-7403-af7c-3149b422f8c2]]
+- [[raw/conversations/019e8db1-624f-73be-ab60-735be949b701|019e8db1-624f-73be-ab60-735be949b701]]

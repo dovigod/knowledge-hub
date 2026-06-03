@@ -4,13 +4,15 @@ name: gRPC
 aliases:
   - GRPC
   - Google RPC
+  - gRPC
   - grpc
-updated_at: '2026-06-03T13:33:52.505Z'
+updated_at: '2026-06-03T13:36:30.807Z'
 summary: >-
   High-performance RPC framework built on HTTP/2 and Protocol Buffers, designed
   for strict, code-generated service-to-service communication.
 sources:
   - 019e8daf-7ac6-70aa-8dac-2f6377d5435b
+  - 019e8db1-624f-73be-ab60-735be949b701
 ---
 <!-- ⚠️  Generated from .kh.db by `kh sync`. Hand edits are detected and staged under _proposals/manual_edit/ on the next sync. -->
 # gRPC
@@ -38,7 +40,17 @@ gRPC is a high-performance Remote Procedure Call framework that delivers fast, s
 > [!example] When it fits
 > Internal east-west traffic between services where latency, schema rigor, and streaming matter more than human-readable payloads or browser reach.
 
-Related: [[REST]], [[HTTP/2]], [[Protocol Buffers]], [[Microservices]], [[RPC]]
+## Comparison: HTTP vs gRPC vs MQ
+
+> [!info] Communication style at a glance
+> - **[[HTTP]]** — synchronous, request/response; best for external APIs and browser-facing traffic.
+> - **gRPC** — synchronous, high-performance RPC; best for internal service-to-service calls where latency and schema rigor matter.
+> - **[[Message Queue|MQ]]** ([[Kafka]], [[RabbitMQ]], [[SQS]]) — asynchronous event delivery; decouples producers from consumers and absorbs load spikes.
+
+> [!tip] They are complements, not substitutes
+> Large real-world systems typically use all three together: [[HTTP]] at the edge, gRPC between internal services, and an [[Message Queue|MQ]] for asynchronous events and decoupling.
+
+Related: [[REST]], [[HTTP]], [[HTTP/2]], [[Protocol Buffers]], [[Microservices]], [[RPC]], [[Message Queue]], [[Kafka]], [[RabbitMQ]], [[SQS]]
 
 ---
 
@@ -67,8 +79,19 @@ gRPC는 [[HTTP/2]] 위에서 [[Protocol Buffers]]를 인터페이스 정의 언�
 > [!example] 적합한 상황
 > 사람이 읽는 페이로드나 브라우저 접근성보다 지연 시간, 스키마 엄격성, 스트리밍이 더 중요한 서비스 간 내부 통신.
 
-관련: [[REST]], [[HTTP/2]], [[Protocol Buffers]], [[Microservices]], [[RPC]]
+### 비교: HTTP vs gRPC vs MQ
+
+> [!info] 통신 방식 한눈에 보기
+> - **[[HTTP]]** — 동기식 요청/응답. 외부 API와 브라우저 대상 트래픽에 주로 사용.
+> - **gRPC** — 동기식 고성능 RPC. 지연 시간과 스키마 엄격성이 중요한 내부 서비스 간 통신에 적합.
+> - **[[Message Queue|MQ]]** ([[Kafka]], [[RabbitMQ]], [[SQS]]) — 비동기 이벤트 전달. 생산자와 소비자를 분리하고 부하 급증을 흡수.
+
+> [!tip] 대체재가 아니라 보완재
+> 실제 대규모 시스템은 세 가지를 함께 쓴다: 엣지에는 [[HTTP]], 내부 서비스 간에는 gRPC, 비동기 이벤트와 결합도 감소에는 [[Message Queue|MQ]].
+
+관련: [[REST]], [[HTTP]], [[HTTP/2]], [[Protocol Buffers]], [[Microservices]], [[RPC]], [[Message Queue]], [[Kafka]], [[RabbitMQ]], [[SQS]]
 
 ## Sources
 
 - [[raw/conversations/019e8daf-7ac6-70aa-8dac-2f6377d5435b|019e8daf-7ac6-70aa-8dac-2f6377d5435b]]
+- [[raw/conversations/019e8db1-624f-73be-ab60-735be949b701|019e8db1-624f-73be-ab60-735be949b701]]
