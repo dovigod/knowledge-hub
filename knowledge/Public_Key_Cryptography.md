@@ -4,13 +4,16 @@ name: Public Key Cryptography
 aliases:
   - Asymmetric Encryption
   - Public Key Cryptography
+  - Public-Key Cryptography
   - asymmetric cryptography
+  - asymmetric-encryption
   - public-key cryptography
   - public-key encryption
+  - public-key-encryption
   - 공개키 암호
   - 공개키 암호화
   - 비대칭 암호화
-updated_at: '2026-06-03T12:57:37.591Z'
+updated_at: '2026-06-07T08:08:24.917Z'
 summary: >-
   An asymmetric cryptosystem using a public/private key pair so anyone can
   encrypt or verify with the public key while only the private key holder can

@@ -15,7 +15,7 @@ aliases:
   - Transport Layer Security
   - http
   - https
-updated_at: '2026-06-07T08:00:35.615Z'
+updated_at: '2026-06-07T08:09:13.616Z'
 summary: 'HTTP over TLS — the standard for encrypted, authenticated web traffic.'
 sources:
   - 019e8ce5-afa5-74be-8636-3900cef4dbf2
