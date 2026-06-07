@@ -14,7 +14,8 @@ aliases:
   - TLS
   - Transport Layer Security
   - http
-updated_at: '2026-06-03T13:37:19.093Z'
+  - https
+updated_at: '2026-06-07T08:00:35.615Z'
 summary: 'HTTP over TLS — the standard for encrypted, authenticated web traffic.'
 sources:
   - 019e8ce5-afa5-74be-8636-3900cef4dbf2
@@ -41,6 +42,9 @@ The same "plain protocol + TLS wrapper" pattern appears across the ecosystem: `h
 - The `s`-suffixed URL scheme convention (`https://`, `wss://`, `rediss://`) is an explicit signal to clients that TLS must be used — not just an optional upgrade. Managed cloud services (e.g. managed Redis) typically require the TLS variant.
 - Self-signed or internal CA environments often need client-side tweaks (e.g. `rejectUnauthorized: false` in Node.js clients) — disable certificate validation only in trusted networks.
 - HTTPS is one transport choice among several in distributed systems: HTTP/HTTPS for external synchronous APIs, [[gRPC]] (typically over TLS via HTTP/2) for internal high-performance synchronous calls, and [[Message Queue]] systems (Kafka, RabbitMQ, SQS) for asynchronous event delivery. TLS is orthogonal to the communication pattern — each of these has its own secure-transport variant.
+
+> [!warning] Why [[Basic Authentication]] *needs* HTTPS
+> Basic Auth credentials are sent as `Base64(user:password)` — Base64 is encoding, not encryption, and anyone capturing the request can decode it instantly. The credential is only safe because the surrounding TLS tunnel hides the header from the network. Strip HTTPS away and Basic Auth is effectively plaintext.
 
 ## Examples
 
@@ -79,6 +83,9 @@ HTTPS는 HTTP 통신을 TLS로 암호화한 채널로 감싸 기밀성(confident
 - `s`가 붙은 URL 스킴 관습(`https://`, `wss://`, `rediss://`)은 단순한 업그레이드 힌트가 아니라 "TLS를 반드시 사용하라"는 명시적 신호다. 클라우드 매니지드 서비스(예: managed Redis)에서는 사실상 TLS 변형이 필수인 경우가 많다.
 - self-signed 인증서나 내부 CA 환경에서는 클라이언트 측 옵션 조정(예: Node.js의 `rejectUnauthorized: false`)이 필요할 수 있다. 단, 인증서 검증을 끄는 것은 신뢰된 네트워크에 한해서만 해야 한다.
 - HTTPS는 분산 시스템에서 선택할 수 있는 여러 전송 방식 중 하나다: 외부 동기식 API에는 HTTP/HTTPS, 내부 고성능 동기 호출에는 [[gRPC]](보통 HTTP/2 위의 TLS), 비동기 이벤트 전달에는 [[Message Queue]] 시스템(Kafka, RabbitMQ, SQS). TLS는 통신 패턴과 직교(orthogonal)하며, 각각의 방식 모두 자체적인 보안 전송 변형을 가지고 있다.
+
+> [!warning] [[Basic Authentication]]에 HTTPS가 *필수*인 이유
+> Basic Auth의 자격 증명은 `Base64(user:password)` 형태로 전송된다 — Base64는 암호화가 아니라 인코딩이라서, 요청을 가로챈 누구든 즉시 디코드할 수 있다. 이 자격 증명이 안전한 유일한 이유는 바깥을 감싸는 TLS 터널이 헤더를 네트워크로부터 숨겨주기 때문이다. HTTPS를 벗기는 순간 Basic Auth는 사실상 평문이나 마찬가지다.
 
 ### 예시
 
