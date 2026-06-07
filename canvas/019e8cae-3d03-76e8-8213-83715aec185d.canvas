@@ -1,0 +1,23 @@
+{
+  "nodes": [
+    {
+      "id": "note0",
+      "type": "file",
+      "file": "notes/Redis_개요와_사용_사례.md",
+      "x": 0,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "note1",
+      "type": "file",
+      "file": "notes/kh_sync_동작_원리.md",
+      "x": 640,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    }
+  ],
+  "edges": []
+}

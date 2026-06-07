@@ -1,0 +1,191 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/kh_sync_동작_원리.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "sqlite",
+      "type": "text",
+      "text": ".kh.db (SQLite) = source of truth",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "md",
+      "type": "text",
+      "text": "마크다운 vault = 생성된 view",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "dirty",
+      "type": "text",
+      "text": "dirty 조건: updated_at > synced_at AND deleted_at IS NULL",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. dirty entity 찾기 (+ 삭제된 entity)",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. drift check: 파일 hash vs last_rendered_hash",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. entity → 마크다운 렌더 ('Generated from .kh.db' 배너)",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. 파일별 synced_at 즉시 갱신 (crash 시 재개 가능)",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "5. 결과를 git 커밋",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "proposal",
+      "type": "text",
+      "text": "수기 편집은 _proposals/manual_edit/ 에 staging",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "flags",
+      "type": "text",
+      "text": "플래그: --entity / --since / --full / --dry-run",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "onepath",
+      "type": "text",
+      "text": "모든 플래그는 synced_at을 비워 dirty query 재사용 (코드 경로 1개)",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "sqlite",
+      "toNode": "md",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "렌더"
+    },
+    {
+      "id": "e1",
+      "fromNode": "dirty",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e2",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "s2",
+      "toNode": "proposal",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "drift 감지 시"
+    },
+    {
+      "id": "e7",
+      "fromNode": "flags",
+      "toNode": "onepath",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e8",
+      "fromNode": "onepath",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "dirty 마킹"
+    }
+  ]
+}
