@@ -3,10 +3,12 @@ id: 019e8d57-a117-73c9-b8c4-5c7d7c97dc94
 name: Naan
 aliases:
   - Indian naan
+  - Naan
   - naan
   - 난
   - 인도 난
-updated_at: '2026-06-03T11:56:30.872Z'
+  - 인도식 난
+updated_at: '2026-06-07T08:06:06.081Z'
 summary: >-
   A leavened, oven-baked Indian flatbread traditionally cooked in a tandoor and
   commonly paired with curries.
