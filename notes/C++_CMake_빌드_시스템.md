@@ -1,6 +1,6 @@
 ---
 id: 019e8d91-7130-7206-8544-52196c88c1bf
-title: CMake 내부 동작 원리
+title: C++ CMake 빌드 시스템
 topics:
   - c++
   - cmake
@@ -10,7 +10,7 @@ sources:
   - 019e8da5-ab9c-713f-b09d-4c32f39c0ef5
   - 019e8da6-4386-7787-acfe-527b94c3a704
 created_at: '2026-06-03T12:59:39.695Z'
-updated_at: '2026-06-03T13:24:24.839Z'
+updated_at: '2026-06-07T08:10:51.256Z'
 ---
 ## Overview
 
