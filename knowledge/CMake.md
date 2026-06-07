@@ -5,7 +5,8 @@ aliases:
   - CMake
   - CMakeLists
   - cmake
-updated_at: '2026-06-03T13:22:40.017Z'
+  - cmakelists.txt
+updated_at: '2026-06-07T08:10:00.258Z'
 summary: >-
   A cross-platform build system generator that produces native build files
   (Makefiles, Ninja, Visual Studio projects) from declarative CMakeLists.txt
