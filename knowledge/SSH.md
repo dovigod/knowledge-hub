@@ -6,7 +6,7 @@ aliases:
   - SSH protocol
   - Secure Shell
   - ssh
-updated_at: '2026-06-07T08:02:09.435Z'
+updated_at: '2026-06-07T08:04:14.837Z'
 summary: >-
   A cryptographic network protocol for securely accessing and operating remote
   servers over an untrusted network.
@@ -30,7 +30,10 @@ SSH (Secure Shell) is a network protocol for secure remote login, command execut
 - **Symmetric encryption**: after key exchange, both sides derive a shared session key and use a symmetric cipher (AES, ChaCha20) for bulk data — faster than asymmetric crypto.
 - **vs HTTPS**: HTTPS authenticates the server via a CA-signed certificate chain and is request/response oriented; SSH typically uses TOFU (trust-on-first-use) host keys stored in `known_hosts` and provides a long-lived interactive or tunneled session.
 - **Common uses**: remote shell, `scp`/`sftp` file transfer, port forwarding (tunneling), git over SSH, `ProxyJump` bastion hosts.
-- **Layer positioning**: SSH operates at the application layer (L7) over TCP, but is often discussed alongside L3/L4/L7 network security since it provides transport-level encryption similar to TLS. Related concepts: L3 security (IPsec, network ACLs, firewall rules at IP level), L4 security (TCP/UDP port filtering, stateful firewalls), and L7 security (application-aware policies as in [[Cilium]]).
+- **Layer positioning**: SSH operates at the application layer (L7) over TCP, but is often discussed alongside L3/L4/L7 network security since it provides transport-level encryption similar to TLS.
+  - **L3 security** (network layer): IPsec tunnels, network ACLs, IP-based firewall rules, VPC routing controls — operates on IP packets without understanding ports or applications.
+  - **L4 security** (transport layer): TCP/UDP port filtering, stateful firewalls, connection tracking — enforces which ports/protocols can talk to which hosts.
+  - **L7 security** (application layer): application-aware policies that inspect HTTP paths, gRPC methods, or DNS queries — as in [[Cilium]], which uses eBPF to enforce identity-based L7 policy in Kubernetes clusters.
 
 > [!tip] Operational hardening
 > Disable password auth, disable root login, restrict allowed users, prefer ED25519 keys, enable fail2ban. Changing the default port is only defense-in-depth, not real security.
@@ -52,7 +55,10 @@ SSH(Secure Shell)는 신뢰할 수 없는 네트워크에서 원격 로그인, �
 - **대칭키 암호화**: 키 교환 이후 양측이 공유 세션 키를 도출하고 AES, ChaCha20 같은 대칭 암호로 실제 데이터를 암호화한다. 비대칭 방식보다 훨씬 빠르다.
 - **HTTPS와의 차이**: HTTPS는 CA가 서명한 인증서 체인으로 서버를 인증하고 요청/응답 중심으로 동작한다. SSH는 보통 `known_hosts`에 저장된 호스트 키 기반의 TOFU(처음 연결 시 신뢰) 방식이며, 장시간 유지되는 인터랙티브 세션이나 터널을 제공한다.
 - **주요 용도**: 원격 셸, `scp`/`sftp` 파일 전송, 포트 포워딩(터널링), git over SSH, `ProxyJump`를 활용한 배스천 호스트 접근.
-- **계층 관점**: SSH는 TCP 위에서 동작하는 애플리케이션 계층(L7) 프로토콜이지만, TLS와 비슷하게 전송 구간 암호화를 제공하기 때문에 L3/L4/L7 네트워크 보안과 함께 논의되는 경우가 많다. 관련 개념으로는 L3 보안(IPsec, 네트워크 ACL, IP 단위 방화벽 규칙), L4 보안(TCP/UDP 포트 필터링, 스테이트풀 방화벽), L7 보안([[Cilium]]처럼 애플리케이션을 이해하는 정책)이 있다.
+- **계층 관점**: SSH는 TCP 위에서 동작하는 애플리케이션 계층(L7) 프로토콜이지만, TLS와 비슷하게 전송 구간 암호화를 제공하기 때문에 L3/L4/L7 네트워크 보안과 함께 논의되는 경우가 많다.
+  - **L3 보안**(네트워크 계층): IPsec 터널, 네트워크 ACL, IP 단위 방화벽 규칙, VPC 라우팅 제어 등. 포트나 애플리케이션을 이해하지 않고 IP 패킷 수준에서 동작한다.
+  - **L4 보안**(전송 계층): TCP/UDP 포트 필터링, 스테이트풀 방화벽, 커넥션 트래킹. 어떤 포트/프로토콜이 어떤 호스트와 통신할 수 있는지를 강제한다.
+  - **L7 보안**(애플리케이션 계층): HTTP 경로, gRPC 메서드, DNS 쿼리 같은 애플리케이션 정보까지 보고 정책을 적용하는 방식. [[Cilium]]이 대표적이며, eBPF를 이용해 쿠버네티스 클러스터에서 아이덴티티 기반 L7 정책을 강제한다.
 
 > [!tip] 운영 환경 강화
 > 비밀번호 인증 비활성화, root 로그인 차단, 사용자 제한, ED25519 키 사용, fail2ban 적용을 기본으로 한다. 기본 포트 변경은 보조적인 방어 수단일 뿐 실질적인 보안 대책은 아니다.
