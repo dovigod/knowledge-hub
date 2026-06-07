@@ -1,6 +1,6 @@
 ---
 id: 019e8dac-857f-77fa-90b9-c7147e4917cf
-title: DNS MX 레코드
+title: DNS MX 레코드와 이메일 IP reputation
 topics:
   - dns
   - a-record
@@ -9,11 +9,14 @@ topics:
   - mx
   - email
   - 메일 서버
+  - ip-reputation
+  - deliverability
 sources:
   - 019e8da4-1abf-712d-9a84-ecac84ea1a42
   - 019e8d28-0dc9-755c-834d-aad29d26a380
+  - 019e8d62-7f51-7099-87e6-cd054d1d0057
 created_at: '2026-06-03T13:29:14.367Z'
-updated_at: '2026-06-07T08:01:30.768Z'
+updated_at: '2026-06-07T08:06:55.830Z'
 ---
 ## A Record
 
