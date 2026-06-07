@@ -5,7 +5,7 @@ aliases:
   - Redis
   - redis
   - redis-server
-updated_at: '2026-06-03T13:33:32.130Z'
+updated_at: '2026-06-07T07:58:04.600Z'
 summary: >-
   In-memory key-value data store used as a cache, database, and message broker
   with rich data structures and atomic single-threaded execution.
