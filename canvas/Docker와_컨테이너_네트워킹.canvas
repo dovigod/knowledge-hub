@@ -10,41 +10,11 @@
       "height": 640
     },
     {
-      "id": "problem",
-      "type": "text",
-      "text": "문제: '내 컴퓨터에선 됐는데?' 환경 차이",
-      "x": 600,
-      "y": 0,
-      "width": 460,
-      "height": 160,
-      "color": "6"
-    },
-    {
       "id": "kernel",
       "type": "text",
       "text": "Linux 커널: namespaces + cgroups",
       "x": 600,
-      "y": 220,
-      "width": 460,
-      "height": 160,
-      "color": "6"
-    },
-    {
-      "id": "ns",
-      "type": "text",
-      "text": "namespaces = 시야 격리 (PID/NET/MNT…)",
-      "x": 600,
-      "y": 440,
-      "width": 460,
-      "height": 160,
-      "color": "6"
-    },
-    {
-      "id": "cg",
-      "type": "text",
-      "text": "cgroups = 자원 한도 (CPU/메모리)",
-      "x": 600,
-      "y": 660,
+      "y": 0,
       "width": 460,
       "height": 160,
       "color": "6"
@@ -52,17 +22,47 @@
     {
       "id": "docker",
       "type": "text",
-      "text": "Docker = 커널 격리 기능을 쉽게 묶은 도구",
+      "text": "Docker = 커널 기능의 포장 (새 기술 아님)",
       "x": 600,
-      "y": 880,
+      "y": 220,
       "width": 460,
       "height": 160,
       "color": "6"
     },
     {
-      "id": "flow",
+      "id": "vm_vs",
       "type": "text",
-      "text": "Dockerfile → Image → Container (레시피→틀→붕어빵)",
+      "text": "VM(전체 OS) vs 컨테이너(커널 공유)",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "netns",
+      "type": "text",
+      "text": "NET namespace = 네트워크 스택 한 벌 복제",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "port3000",
+      "type": "text",
+      "text": "예: 두 컨테이너가 동시에 3000 포트 LISTEN 가능",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. -p 8080:3000 으로 호스트 창문 뚫기",
       "x": 0,
       "y": 0,
       "width": 460,
@@ -70,49 +70,49 @@
       "color": "4"
     },
     {
-      "id": "netns",
+      "id": "s2",
       "type": "text",
-      "text": "NET namespace = 네트워크 스택 통째 복사 (포트 장부 별도)",
+      "text": "2. 패킷이 docker0 브리지 + veth 통과",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. iptables DNAT: host:8080 → containerIP:3000",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. 컨테이너 안 app이 3000에서 수신",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "hijack",
+      "type": "text",
+      "text": "경로 장악: BGP/DNS/ARP/iptables 조작",
       "x": 600,
-      "y": 1100,
+      "y": 880,
       "width": 460,
       "height": 160,
       "color": "6"
     },
     {
-      "id": "sameport",
+      "id": "mew",
       "type": "text",
-      "text": "예: 두 컨테이너 모두 내부 3000 LISTEN, 충돌 없음",
-      "x": 1200,
-      "y": 0,
-      "width": 460,
-      "height": 160,
-      "color": "3"
-    },
-    {
-      "id": "veth",
-      "type": "text",
-      "text": "veth pair + docker0 bridge = 가상 배선",
-      "x": 600,
-      "y": 1320,
-      "width": 460,
-      "height": 160,
-      "color": "6"
-    },
-    {
-      "id": "nat",
-      "type": "text",
-      "text": "iptables NAT: DNAT(들어옴) / MASQUERADE(나감)",
-      "x": 600,
-      "y": 1540,
-      "width": 460,
-      "height": 160,
-      "color": "6"
-    },
-    {
-      "id": "portmap",
-      "type": "text",
-      "text": "docker run -p 8080:3000 = 호스트:컨테이너 (벽에 창문)",
+      "text": "예: MyEtherWallet 2018 BGP 하이재킹",
       "x": 1200,
       "y": 220,
       "width": 460,
@@ -120,11 +120,11 @@
       "color": "3"
     },
     {
-      "id": "mac",
+      "id": "tls",
       "type": "text",
-      "text": "맥의 함정: 맥 안 Linux VM에서 컨테이너 실행",
+      "text": "TLS/mTLS: CA 서명으로 신원 검증 (마지막 방어선)",
       "x": 600,
-      "y": 1760,
+      "y": 1100,
       "width": 460,
       "height": 160,
       "color": "6"
@@ -133,95 +133,94 @@
   "edges": [
     {
       "id": "e0",
-      "fromNode": "problem",
-      "toNode": "kernel",
+      "fromNode": "kernel",
+      "toNode": "docker",
       "fromSide": "bottom",
       "toSide": "top",
-      "label": "해결책"
+      "label": "포장"
     },
     {
       "id": "e1",
-      "fromNode": "kernel",
-      "toNode": "ns",
+      "fromNode": "docker",
+      "toNode": "vm_vs",
       "fromSide": "bottom",
       "toSide": "top"
     },
     {
       "id": "e2",
       "fromNode": "kernel",
-      "toNode": "cg",
-      "fromSide": "bottom",
-      "toSide": "top"
-    },
-    {
-      "id": "e3",
-      "fromNode": "ns",
-      "toNode": "docker",
-      "fromSide": "bottom",
-      "toSide": "top",
-      "label": "묶음"
-    },
-    {
-      "id": "e4",
-      "fromNode": "cg",
-      "toNode": "docker",
-      "fromSide": "bottom",
-      "toSide": "top",
-      "label": "묶음"
-    },
-    {
-      "id": "e5",
-      "fromNode": "docker",
-      "toNode": "flow",
-      "fromSide": "left",
-      "toSide": "right"
-    },
-    {
-      "id": "e6",
-      "fromNode": "ns",
       "toNode": "netns",
       "fromSide": "bottom",
       "toSide": "top",
       "label": "포함"
     },
     {
-      "id": "e7",
+      "id": "e3",
       "fromNode": "netns",
-      "toNode": "sameport",
+      "toNode": "port3000",
       "fromSide": "right",
       "toSide": "left",
-      "label": "덕분에"
+      "label": "충돌 없음"
     },
     {
-      "id": "e8",
-      "fromNode": "netns",
-      "toNode": "veth",
-      "fromSide": "bottom",
-      "toSide": "top",
-      "label": "외부 연결"
-    },
-    {
-      "id": "e9",
-      "fromNode": "veth",
-      "toNode": "nat",
+      "id": "e4",
+      "fromNode": "s1",
+      "toNode": "s2",
       "fromSide": "bottom",
       "toSide": "top"
     },
     {
-      "id": "e10",
-      "fromNode": "nat",
-      "toNode": "portmap",
+      "id": "e5",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "fromNode": "netns",
+      "toNode": "s4",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "내부 포트 수신"
+    },
+    {
+      "id": "e8",
+      "fromNode": "s3",
+      "toNode": "hijack",
       "fromSide": "right",
       "toSide": "left",
-      "label": "규칙 생성"
+      "label": "NAT 경로 장악"
+    },
+    {
+      "id": "e9",
+      "fromNode": "hijack",
+      "toNode": "mew",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e10",
+      "fromNode": "hijack",
+      "toNode": "tls",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "막는 방어선"
     },
     {
       "id": "e11",
-      "fromNode": "portmap",
-      "toNode": "mac",
+      "fromNode": "mew",
+      "toNode": "tls",
       "fromSide": "left",
       "toSide": "right",
-      "label": "실제 동작 위치"
+      "label": "TLS 무시 시 피해"
     }
   ]
 }
