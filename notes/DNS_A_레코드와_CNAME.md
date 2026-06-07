@@ -1,15 +1,19 @@
 ---
 id: 019e8dac-857f-77fa-90b9-c7147e4917cf
-title: DNS A 레코드와 CNAME
+title: DNS MX 레코드
 topics:
   - dns
   - a-record
   - cname
   - 네트워크
+  - mx
+  - email
+  - 메일 서버
 sources:
   - 019e8da4-1abf-712d-9a84-ecac84ea1a42
+  - 019e8d28-0dc9-755c-834d-aad29d26a380
 created_at: '2026-06-03T13:29:14.367Z'
-updated_at: '2026-06-03T13:29:14.367Z'
+updated_at: '2026-06-07T08:01:30.768Z'
 ---
 ## A Record
 
@@ -45,6 +49,33 @@ updated_at: '2026-06-03T13:29:14.367Z'
 - A record = domain → IP address
 - CNAME = domain → another domain name
 - Ultimately, at the end of the CNAME chain, an A or AAAA record provides the actual IP.
+
+## MX Record
+
+**[[MX]] (Mail eXchanger) record** is a DNS record type — not a status value — that **specifies the mail server that will receive email for the domain**.
+
+Structure:
+
+```
+example.com.    3600    IN    MX    10 mail1.example.com.
+example.com.    3600    IN    MX    20 mail2.example.com.
+```
+
+- **Priority** — the leading number (10, 20). **Lower values are tried first**, and equal values are load-balanced. In the example above, mail2 is only used when mail1 is down.
+- **Mail server hostname** — must be a hostname that resolves via an A/AAAA record. Pointing to a CNAME or to an IP address directly is a standard violation.
+
+Common usage examples:
+
+| Service | MX value |
+|---|---|
+| Google Workspace | `smtp.google.com` (priority 1) |
+| Microsoft 365 | `<domain>.mail.protection.outlook.com` (0) |
+
+How to check:
+
+```bash
+dig MX example.com +short
+```
 
 ---
 
@@ -84,3 +115,30 @@ updated_at: '2026-06-03T13:29:14.367Z'
 - A 레코드 = 도메인 → IP 주소
 - CNAME = 도메인 → 다른 도메인 이름
 - 최종적으로는 CNAME 체인의 끝에서 A 또는 AAAA 레코드가 실제 IP를 제공합니다.
+
+### MX 레코드
+
+**[[MX]] (Mail eXchanger) 레코드**는 상태값이라기보다는 DNS 레코드 타입 중 하나로, **해당 도메인의 이메일을 수신할 메일 서버를 지정**하는 레코드입니다.
+
+구조는 이렇습니다:
+
+```
+example.com.    3600    IN    MX    10 mail1.example.com.
+example.com.    3600    IN    MX    20 mail2.example.com.
+```
+
+- **우선순위 (Priority)** — 앞의 숫자 (10, 20). **낮을수록 먼저 시도**되고, 같은 값이면 부하 분산됩니다. 위 예시에선 mail1이 죽었을 때만 mail2로 갑니다.
+- **메일 서버 호스트명** — 반드시 A/AAAA 레코드로 해석되는 호스트명이어야 하고, CNAME이나 IP 직접 지정은 표준 위반입니다.
+
+흔한 사용 예:
+
+| 서비스 | MX 값 |
+|---|---|
+| Google Workspace | `smtp.google.com` (우선순위 1) |
+| Microsoft 365 | `<도메인>.mail.protection.outlook.com` (0) |
+
+확인 방법:
+
+```bash
+dig MX example.com +short
+```
