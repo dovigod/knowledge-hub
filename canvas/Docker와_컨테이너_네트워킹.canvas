@@ -12,7 +12,7 @@
     {
       "id": "problem",
       "type": "text",
-      "text": "문제: '내 컴퓨터에선 됐는데?' (환경 차이)",
+      "text": "문제: '내 컴퓨터에선 됐는데?' 환경 차이",
       "x": 600,
       "y": 0,
       "width": 460,
@@ -22,7 +22,7 @@
     {
       "id": "kernel",
       "type": "text",
-      "text": "Linux 커널 격리 기능: namespaces + cgroups",
+      "text": "Linux 커널: namespaces + cgroups",
       "x": 600,
       "y": 220,
       "width": 460,
@@ -32,7 +32,7 @@
     {
       "id": "ns",
       "type": "text",
-      "text": "namespaces = 시야 격리 (PID/NET/MNT...)",
+      "text": "namespaces = 시야 격리 (PID/NET/MNT…)",
       "x": 600,
       "y": 440,
       "width": 460,
@@ -52,7 +52,7 @@
     {
       "id": "docker",
       "type": "text",
-      "text": "Docker = 커널 격리를 쉽게 포장한 도구",
+      "text": "Docker = 커널 격리 기능을 쉽게 묶은 도구",
       "x": 600,
       "y": 880,
       "width": 460,
@@ -60,9 +60,19 @@
       "color": "6"
     },
     {
-      "id": "image",
+      "id": "flow",
       "type": "text",
       "text": "Dockerfile → Image → Container (레시피→틀→붕어빵)",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "netns",
+      "type": "text",
+      "text": "NET namespace = 네트워크 스택 통째 복사 (포트 장부 별도)",
       "x": 600,
       "y": 1100,
       "width": 460,
@@ -70,9 +80,19 @@
       "color": "6"
     },
     {
-      "id": "netns",
+      "id": "sameport",
       "type": "text",
-      "text": "NET namespace = 네트워크 스택 통째 복사본",
+      "text": "예: 두 컨테이너 모두 내부 3000 LISTEN, 충돌 없음",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "veth",
+      "type": "text",
+      "text": "veth pair + docker0 bridge = 가상 배선",
       "x": 600,
       "y": 1320,
       "width": 460,
@@ -80,64 +100,34 @@
       "color": "6"
     },
     {
-      "id": "same3000",
+      "id": "nat",
       "type": "text",
-      "text": "예: 컨테이너 둘 다 내부 3000번 써도 충돌 X",
+      "text": "iptables NAT: DNAT(들어옴) / MASQUERADE(나감)",
+      "x": 600,
+      "y": 1540,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "portmap",
+      "type": "text",
+      "text": "docker run -p 8080:3000 = 호스트:컨테이너 (벽에 창문)",
       "x": 1200,
-      "y": 0,
-      "width": 460,
-      "height": 160,
-      "color": "3"
-    },
-    {
-      "id": "s1",
-      "type": "text",
-      "text": "1. app.listen(3000) → bind() 시스템 콜",
-      "x": 0,
-      "y": 0,
-      "width": 460,
-      "height": 160,
-      "color": "4"
-    },
-    {
-      "id": "s2",
-      "type": "text",
-      "text": "2. 커널이 해당 NET ns 포트 장부에 기록",
-      "x": 0,
       "y": 220,
       "width": 460,
       "height": 160,
-      "color": "4"
-    },
-    {
-      "id": "s3",
-      "type": "text",
-      "text": "3. veth pair + docker0 bridge로 호스트 연결",
-      "x": 0,
-      "y": 440,
-      "width": 460,
-      "height": 160,
-      "color": "4"
-    },
-    {
-      "id": "s4",
-      "type": "text",
-      "text": "4. iptables DNAT: 호스트:8080 → 컨테이너IP:3000",
-      "x": 0,
-      "y": 660,
-      "width": 460,
-      "height": 160,
-      "color": "4"
+      "color": "3"
     },
     {
       "id": "mac",
       "type": "text",
-      "text": "맥 함정: 맥엔 Linux 없음 → 작은 VM 안에서 실행",
-      "x": 1200,
-      "y": 220,
+      "text": "맥의 함정: 맥 안 Linux VM에서 컨테이너 실행",
+      "x": 600,
+      "y": 1760,
       "width": 460,
       "height": 160,
-      "color": "3"
+      "color": "6"
     }
   ],
   "edges": [
@@ -147,7 +137,7 @@
       "toNode": "kernel",
       "fromSide": "bottom",
       "toSide": "top",
-      "label": "해결 수단"
+      "label": "해결책"
     },
     {
       "id": "e1",
@@ -169,7 +159,7 @@
       "toNode": "docker",
       "fromSide": "bottom",
       "toSide": "top",
-      "label": "포장"
+      "label": "묶음"
     },
     {
       "id": "e4",
@@ -177,14 +167,14 @@
       "toNode": "docker",
       "fromSide": "bottom",
       "toSide": "top",
-      "label": "포장"
+      "label": "묶음"
     },
     {
       "id": "e5",
       "fromNode": "docker",
-      "toNode": "image",
-      "fromSide": "bottom",
-      "toSide": "top"
+      "toNode": "flow",
+      "fromSide": "left",
+      "toSide": "right"
     },
     {
       "id": "e6",
@@ -192,51 +182,46 @@
       "toNode": "netns",
       "fromSide": "bottom",
       "toSide": "top",
-      "label": "그중 하나"
+      "label": "포함"
     },
     {
       "id": "e7",
       "fromNode": "netns",
-      "toNode": "same3000",
+      "toNode": "sameport",
       "fromSide": "right",
       "toSide": "left",
       "label": "덕분에"
     },
     {
       "id": "e8",
-      "fromNode": "same3000",
-      "toNode": "s1",
-      "fromSide": "left",
-      "toSide": "right"
+      "fromNode": "netns",
+      "toNode": "veth",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "외부 연결"
     },
     {
       "id": "e9",
-      "fromNode": "s1",
-      "toNode": "s2",
+      "fromNode": "veth",
+      "toNode": "nat",
       "fromSide": "bottom",
       "toSide": "top"
     },
     {
       "id": "e10",
-      "fromNode": "s2",
-      "toNode": "s3",
-      "fromSide": "bottom",
-      "toSide": "top"
+      "fromNode": "nat",
+      "toNode": "portmap",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "규칙 생성"
     },
     {
       "id": "e11",
-      "fromNode": "s3",
-      "toNode": "s4",
-      "fromSide": "bottom",
-      "toSide": "top"
-    },
-    {
-      "id": "e12",
-      "fromNode": "docker",
+      "fromNode": "portmap",
       "toNode": "mac",
-      "fromSide": "right",
-      "toSide": "left",
-      "label": "맥에서는"
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "실제 동작 위치"
     }
   ]
 }
