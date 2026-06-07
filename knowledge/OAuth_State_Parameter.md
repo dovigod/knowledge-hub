@@ -2,12 +2,14 @@
 id: 019e8cf7-8e7b-738c-aacf-41f8fecaf102
 name: OAuth State Parameter
 aliases:
+  - OAuth state
   - oauth state
   - oauth-state
   - oidc state
   - state
+  - state param
   - state parameter
-updated_at: '2026-06-07T08:25:44.753Z'
+updated_at: '2026-06-07T08:27:09.935Z'
 summary: >-
   An opaque, unguessable value the client includes in OAuth/OIDC authorization
   requests to bind the callback to the original session and defend against CSRF.
@@ -28,7 +30,8 @@ The `state` parameter is an opaque, client-generated value sent with an [[OAuth 
 - Stored server-side or in a signed/HttpOnly cookie tied to the session before the redirect.
 - On callback, the server compares the returned `state` to the stored value — any mismatch aborts the flow.
 - Without `state`, an attacker could craft a malicious callback URL with their own authorization code, tricking the victim's logged-in browser into linking the attacker's account.
-- Distinct from [[Nonce]]: `state` protects the request/callback channel (CSRF); `nonce` protects the ID Token from replay/injection.
+- Distinct from [[Nonce]]: `state` protects the request/callback channel (CSRF); `nonce` protects the ID Token from replay/injection. Together they cover the two distinct attack surfaces of an [[OIDC]] flow.
+- Server-side storage for `state` is often backed by a fast key-value store like [[Redis]] so the lookup on callback stays sub-millisecond and the entry can be auto-expired.
 
 > [!warning] One-shot, single-use
 > Treat the stored `state` like a CSRF token: consume it on the first successful callback and invalidate it. Reusing `state` across attempts re-opens the window the parameter was designed to close.
@@ -48,7 +51,8 @@ The `state` parameter is an opaque, client-generated value sent with an [[OAuth 
 - redirect 전에 서버 사이드 또는 세션에 묶인 signed/HttpOnly 쿠키에 저장합니다.
 - callback 시 서버는 반환된 `state`를 저장된 값과 비교하며, 불일치 시 flow를 중단합니다.
 - `state`가 없으면 공격자가 자신의 authorization code가 담긴 악성 callback URL을 만들어, 로그인된 피해자의 브라우저가 공격자 계정을 연결하도록 속일 수 있습니다.
-- [[Nonce]]와 구분: `state`는 요청/callback 채널(CSRF)을 보호하고, `nonce`는 ID Token을 replay/injection 으로부터 보호합니다.
+- [[Nonce]]와 구분: `state`는 요청/callback 채널(CSRF)을 보호하고, `nonce`는 ID Token을 replay/injection 으로부터 보호합니다. 둘이 합쳐져야 [[OIDC]] flow의 서로 다른 두 공격면이 모두 막힙니다.
+- `state`의 서버 사이드 저장소로는 [[Redis]] 같은 빠른 key-value store를 자주 씁니다 — callback에서의 조회를 sub-millisecond로 유지하고 자동 만료까지 걸 수 있기 때문입니다.
 
 > [!warning] 일회성, 단일 사용
 > 저장된 `state`는 CSRF 토큰처럼 다루세요: 첫 callback 성공 시 소비하고 무효화합니다. 여러 시도에 걸쳐 재사용하면, 이 파라미터가 막으려던 바로 그 공격 창이 다시 열립니다.

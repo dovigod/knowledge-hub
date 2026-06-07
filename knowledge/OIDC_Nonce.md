@@ -2,12 +2,14 @@
 id: 019e8cf7-9d4d-761a-88f3-40476b17c1a6
 name: OIDC Nonce
 aliases:
+  - OIDC nonce
+  - auth nonce
   - id token nonce
   - id-token nonce
   - nonce
   - oidc nonce
   - oidc-nonce
-updated_at: '2026-06-07T08:26:08.978Z'
+updated_at: '2026-06-07T08:27:31.957Z'
 summary: >-
   A client-generated random value bound to the ID Token's `nonce` claim,
   preventing token replay and ID-token injection attacks in OpenID Connect
@@ -30,6 +32,7 @@ In [[OpenID Connect]], `nonce` is a random value the client generates per authen
 - An attacker who somehow captures an old [[ID Token]] cannot reuse it: their fresh authorization request would carry a *new* nonce, but the stolen token still carries the *old* one.
 - Without nonce, an attacker who intercepts a valid [[ID Token]] could inject it into another user's session and impersonate the original user.
 - Different from [[state]]: `state` protects the redirect/callback channel (CSRF on the authorization response); `nonce` protects the [[ID Token]] itself (replay/injection on the token).
+- Pairs naturally with [[state]] — together they cover both halves of the OIDC handshake: `state` guards the callback, `nonce` guards the token.
 
 > [!warning] Common mistake
 > Reusing the same `nonce` across requests, or skipping verification when the [[ID Token]] "looks valid" by signature alone, collapses the entire defense — signature validity proves the IdP issued it, not that *this* client requested it *now*.
@@ -50,6 +53,7 @@ In [[OpenID Connect]], `nonce` is a random value the client generates per authen
 - 공격자가 어떤 식으로든 과거 [[ID Token]]을 탈취하더라도 재사용할 수 없습니다 — 공격자의 새 authorization 요청에는 *새* nonce가 담기지만, 훔친 토큰에는 *옛* nonce가 들어있기 때문입니다.
 - nonce가 없으면 유효한 [[ID Token]]을 가로챈 공격자가 다른 사용자의 세션에 주입해 원래 사용자를 가장할 수 있습니다.
 - [[state]]와 구분: `state`는 redirect/callback 채널을 보호하고(authorization 응답에 대한 CSRF), `nonce`는 [[ID Token]] 자체를 보호합니다(토큰에 대한 replay/injection).
+- [[state]]와 자연스럽게 짝을 이룹니다 — 둘이 함께 OIDC 핸드셰이크의 양쪽을 모두 보호합니다: `state`는 callback을, `nonce`는 token을 지킵니다.
 
 > [!warning] 자주 하는 실수
 > 여러 요청에서 같은 `nonce`를 재사용하거나, 서명만으로 [[ID Token]]이 "유효해 보인다"고 검증을 건너뛰면 방어 전체가 무너집니다 — 서명 유효성은 IdP가 발급했다는 사실만 증명할 뿐, *이 클라이언트*가 *지금* 요청했다는 사실은 증명하지 못합니다.
