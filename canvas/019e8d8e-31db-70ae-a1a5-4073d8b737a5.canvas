@@ -1,0 +1,23 @@
+{
+  "nodes": [
+    {
+      "id": "note0",
+      "type": "file",
+      "file": "notes/비대칭_암호화_개요.md",
+      "x": 0,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "note1",
+      "type": "file",
+      "file": "notes/Basic_Auth와_Base64_인코딩의_보안.md",
+      "x": 640,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    }
+  ],
+  "edges": []
+}
