@@ -22,7 +22,7 @@
     {
       "id": "asym",
       "type": "text",
-      "text": "비대칭 암호 = 공개키/개인키 쌍",
+      "text": "비대칭 암호 = 키 수립용 (느리지만 안전)",
       "x": 600,
       "y": 220,
       "width": 460,
@@ -32,7 +32,7 @@
     {
       "id": "sym",
       "type": "text",
-      "text": "대칭 암호 = 단일 세션키 (AES, ChaCha20)",
+      "text": "대칭 암호 = 대량 전송용 (빠름, AES/ChaCha20)",
       "x": 600,
       "y": 440,
       "width": 460,
@@ -42,7 +42,7 @@
     {
       "id": "s1",
       "type": "text",
-      "text": "1. 서버 인증: 호스트 공개키 제시 + known_hosts 검증",
+      "text": "1. 서버 인증: 호스트 공개키 제시 → known_hosts 대조",
       "x": 0,
       "y": 0,
       "width": 460,
@@ -52,7 +52,7 @@
     {
       "id": "s2",
       "type": "text",
-      "text": "2. 키 교환: DH/ECDH로 세션키 협상",
+      "text": "2. 키 교환: DH/ECDH로 세션 키 협상",
       "x": 0,
       "y": 220,
       "width": 460,
@@ -62,7 +62,7 @@
     {
       "id": "s3",
       "type": "text",
-      "text": "3. 사용자 인증: 비밀번호 또는 공개키 서명",
+      "text": "3. 사용자 인증: 비밀번호 또는 공개키 서명 검증",
       "x": 0,
       "y": 440,
       "width": 460,
@@ -72,7 +72,7 @@
     {
       "id": "s4",
       "type": "text",
-      "text": "4. 암호화된 세션 시작 (셸, SCP, 터널링)",
+      "text": "4. 암호화된 세션 시작 (셸/SFTP/터널링)",
       "x": 0,
       "y": 660,
       "width": 460,
@@ -92,7 +92,7 @@
     {
       "id": "pubkey",
       "type": "text",
-      "text": "공개키 인증: 서버 챌린지 → 개인키로 서명 → 검증",
+      "text": "공개키 인증: 챌린지에 개인키로 서명, 공개키로 검증",
       "x": 1200,
       "y": 0,
       "width": 460,
@@ -100,19 +100,9 @@
       "color": "3"
     },
     {
-      "id": "mac",
-      "type": "text",
-      "text": "MAC = HMAC-SHA2로 변조 탐지 (무결성)",
-      "x": 600,
-      "y": 880,
-      "width": 460,
-      "height": 160,
-      "color": "6"
-    },
-    {
       "id": "https",
       "type": "text",
-      "text": "HTTPS 비교: CA 체인 vs SSH의 TOFU",
+      "text": "HTTPS 비교: CA 체인 사용 (SSH는 TOFU 기반)",
       "x": 1200,
       "y": 220,
       "width": 460,
@@ -151,43 +141,43 @@
     },
     {
       "id": "e4",
-      "fromNode": "asym",
-      "toNode": "s1",
-      "fromSide": "left",
-      "toSide": "right",
-      "label": "호스트 키 검증"
-    },
-    {
-      "id": "e5",
-      "fromNode": "asym",
-      "toNode": "s2",
-      "fromSide": "left",
-      "toSide": "right",
-      "label": "키 교환에 사용"
-    },
-    {
-      "id": "e6",
-      "fromNode": "s2",
-      "toNode": "sym",
-      "fromSide": "right",
-      "toSide": "left",
-      "label": "세션키 생성"
-    },
-    {
-      "id": "e7",
-      "fromNode": "sym",
-      "toNode": "s4",
-      "fromSide": "left",
-      "toSide": "right",
-      "label": "대량 전송 암호화"
-    },
-    {
-      "id": "e8",
       "fromNode": "s1",
       "toNode": "tofu",
       "fromSide": "right",
       "toSide": "left",
-      "label": "최초 접속 시"
+      "label": "미등록 시"
+    },
+    {
+      "id": "e5",
+      "fromNode": "asym",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "사용"
+    },
+    {
+      "id": "e6",
+      "fromNode": "asym",
+      "toNode": "s2",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "사용"
+    },
+    {
+      "id": "e7",
+      "fromNode": "s2",
+      "toNode": "sym",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "세션 키 수립"
+    },
+    {
+      "id": "e8",
+      "fromNode": "sym",
+      "toNode": "s4",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "트래픽 암호화"
     },
     {
       "id": "e9",
@@ -199,19 +189,11 @@
     },
     {
       "id": "e10",
-      "fromNode": "s4",
-      "toNode": "mac",
-      "fromSide": "right",
-      "toSide": "left",
-      "label": "무결성 보장"
-    },
-    {
-      "id": "e11",
       "fromNode": "ssh",
       "toNode": "https",
       "fromSide": "right",
       "toSide": "left",
-      "label": "신뢰 모델 차이"
+      "label": "유사 패턴"
     }
   ]
 }
