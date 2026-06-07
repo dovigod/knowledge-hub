@@ -1,0 +1,225 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/네트워크_하이재킹_공격과_TLS_방어.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "essence",
+      "type": "text",
+      "text": "본질: 경로(라우팅/NAT/주소해석) 장악 = 트래픽 장악",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "nat_demo",
+      "type": "text",
+      "text": "예: iptables DNAT로 8080→B 리다이렉트",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "attacks",
+      "type": "text",
+      "text": "공격: BGP/DNS/ARP 하이재킹, MITM, Evil Twin",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "mew",
+      "type": "text",
+      "text": "예: MEW 2018 — BGP→DNS 스푸핑→215 ETH 탈취",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "axis_a",
+      "type": "text",
+      "text": "축A 최소권한: --cap-drop, NetworkPolicy, RPKI",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "axis_b",
+      "type": "text",
+      "text": "축B 암호화+인증: mTLS/TLS/인증서 피닝 (최강)",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "axis_c",
+      "type": "text",
+      "text": "축C 탐지: iptables 감사, Falco",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "tls_identity",
+      "type": "text",
+      "text": "TLS = '경로'가 아닌 '신원(진짜 상대인가)' 검증",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ca_sig",
+      "type": "text",
+      "text": "CA 서명은 위조 불가 (CA 개인키 없음)",
+      "x": 600,
+      "y": 1320,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. 정품+CA신뢰 → OK",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. 가짜+CA신뢰 → 연결 거부 (우회당해도 차단)",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. 가짜 + -k(검증 끔) → STOLEN",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "essence",
+      "toNode": "nat_demo",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "실증"
+    },
+    {
+      "id": "e1",
+      "fromNode": "essence",
+      "toNode": "attacks",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "구체 사례"
+    },
+    {
+      "id": "e2",
+      "fromNode": "attacks",
+      "toNode": "mew",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "실제 사건"
+    },
+    {
+      "id": "e3",
+      "fromNode": "attacks",
+      "toNode": "axis_a",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "attacks",
+      "toNode": "axis_b",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "attacks",
+      "toNode": "axis_c",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "axis_b",
+      "toNode": "tls_identity",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "핵심 원리"
+    },
+    {
+      "id": "e7",
+      "fromNode": "tls_identity",
+      "toNode": "ca_sig",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "근거"
+    },
+    {
+      "id": "e8",
+      "fromNode": "ca_sig",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e9",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e10",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e11",
+      "fromNode": "mew",
+      "toNode": "tls_identity",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "마지막 방어선"
+    }
+  ]
+}
