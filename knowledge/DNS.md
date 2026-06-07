@@ -6,7 +6,7 @@ aliases:
   - Domain Name System
   - dns
   - domain name system
-updated_at: '2026-06-03T13:21:37.103Z'
+updated_at: '2026-06-07T08:08:03.387Z'
 summary: >-
   Hierarchical distributed naming system that maps human-readable domain names
   to IP addresses and other resource records.
@@ -61,6 +61,32 @@ The **A record** and **[[CNAME Record|CNAME]]** are the two most commonly used D
 > - **CNAME** = domain → another domain name
 > - At the end of any CNAME chain, an A or AAAA record provides the actual IP.
 
+## MX Records
+
+The **[[MX Record|MX]] (Mail eXchanger)** record is the DNS record type that declares which mail servers accept email for a domain. It is not a "status" — it is a routing pointer used by sending [[SMTP]] servers.
+
+A zone may publish multiple MX records, each with a **priority** value:
+
+```
+example.com.    3600    IN    MX    10 mail1.example.com.
+example.com.    3600    IN    MX    20 mail2.example.com.
+```
+
+- **Priority** — the leading integer (10, 20). **Lower values are tried first**; equal values are load-balanced. Above, `mail2` is only used as a fallback when `mail1` is unreachable.
+- **Mail server hostname** — must resolve via an A / AAAA record. Pointing an MX at a [[CNAME Record|CNAME]] or directly at an IP literal violates the standard ([RFC 2181 §10.3](https://www.rfc-editor.org/rfc/rfc2181#section-10.3)).
+
+> [!example] Common managed mail providers
+> | Service | MX target | Priority |
+> | --- | --- | --- |
+> | Google Workspace | `smtp.google.com` | 1 |
+> | Microsoft 365 | `<domain>.mail.protection.outlook.com` | 0 |
+
+> [!tip] Inspecting MX records
+> ```bash
+> dig MX example.com +short
+> ```
+> Pair with [[SPF]] / [[DKIM]] / [[DMARC]] TXT lookups when diagnosing deliverability — MX alone tells you where mail goes, not whether it will be trusted on arrival.
+
 ---
 
 ## 한국어
@@ -108,6 +134,32 @@ A 레코드와 **[[CNAME Record|CNAME]]** 레코드는 DNS에서 가장 자주 �
 > - **A 레코드** = 도메인 → IP 주소
 > - **CNAME** = 도메인 → 다른 도메인 이름
 > - CNAME 체인의 끝에서 A 또는 AAAA 레코드가 실제 IP를 제공한다.
+
+### MX 레코드
+
+**[[MX Record|MX]] (Mail eXchanger)** 레코드는 "상태값"이 아니라, 해당 도메인의 메일을 수신할 메일 서버를 지정하는 DNS 레코드 타입이다. 보내는 [[SMTP]] 서버가 수신지를 찾을 때 참조하는 라우팅 포인터다.
+
+한 존(zone)에는 여러 개의 MX 레코드를 둘 수 있고, 각각 **우선순위(priority)** 값을 가진다.
+
+```
+example.com.    3600    IN    MX    10 mail1.example.com.
+example.com.    3600    IN    MX    20 mail2.example.com.
+```
+
+- **우선순위** — 앞의 정수(10, 20). **값이 낮을수록 먼저 시도**되고, 동일하면 부하 분산된다. 위 예시에서는 `mail1` 이 불가할 때만 `mail2` 로 폴백된다.
+- **메일 서버 호스트명** — 반드시 A / AAAA 레코드로 해석되는 호스트명이어야 한다. MX 대상을 [[CNAME Record|CNAME]] 으로 두거나 IP를 직접 박는 것은 표준 위반이다 ([RFC 2181 §10.3](https://www.rfc-editor.org/rfc/rfc2181#section-10.3)).
+
+> [!example] 대표적인 매니지드 메일 서비스
+> | 서비스 | MX 대상 | 우선순위 |
+> | --- | --- | --- |
+> | Google Workspace | `smtp.google.com` | 1 |
+> | Microsoft 365 | `<domain>.mail.protection.outlook.com` | 0 |
+
+> [!tip] MX 레코드 확인
+> ```bash
+> dig MX example.com +short
+> ```
+> 메일 도달성(deliverability)을 점검할 때는 [[SPF]] / [[DKIM]] / [[DMARC]] TXT 조회와 함께 보는 것이 좋다 — MX는 "어디로 가는지"만 알려주지, "수신측이 신뢰할지"는 말해 주지 않는다.
 
 ## Sources
 

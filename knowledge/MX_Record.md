@@ -12,7 +12,7 @@ aliases:
   - mx
   - mx record
   - mx 레코드
-updated_at: '2026-06-07T08:01:00.919Z'
+updated_at: '2026-06-07T08:07:15.085Z'
 summary: >-
   DNS record type that specifies the mail servers responsible for receiving
   email on behalf of a domain.
