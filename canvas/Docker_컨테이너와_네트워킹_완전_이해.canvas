@@ -1,0 +1,252 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/Docker_컨테이너와_네트워킹_완전_이해.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "container",
+      "type": "text",
+      "text": "컨테이너 = 격리된 작은 컴퓨터 (host와 단절)",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "three-holes",
+      "type": "text",
+      "text": "벽을 뚫는 3장치: port / volume / network",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "netns",
+      "type": "text",
+      "text": "network namespace = 격리의 정체 (NIC·라우팅·iptables 독립)",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "veth-bridge",
+      "type": "text",
+      "text": "veth pair + bridge = 컨테이너끼리 잇는 L2 스위치",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "embedded-dns",
+      "type": "text",
+      "text": "embedded DNS 127.0.0.11 = 서비스 이름 → IP (user-defined만)",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "host-internal",
+      "type": "text",
+      "text": "host.docker.internal:host-gateway = 컨테이너→진짜 맥 호스트",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "nginx-upstream",
+      "type": "text",
+      "text": "예: nginx upstream을 host.docker.internal:PORT로 → 컨테이너든 yarn dev든 동일 도달",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. 외부 → macOS:80 (com.docker.backend가 bind)",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. Docker Desktop이 LinuxKit VM으로 forward",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. VM iptables PREROUTING DNAT → nginx 컨테이너 IP:80 (L3/L4)",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. bridge + veth로 nginx eth0 도착 (L2 전송)",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "5. nginx HTTP 파싱 → location 매칭 → proxy_pass (L7 라우팅)",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s6",
+      "type": "text",
+      "text": "6. 헤어핀: 맥:3001로 나갔다가 컨테이너 또는 yarn dev로 수신",
+      "x": 0,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "container",
+      "toNode": "three-holes",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "벽을 뚫는 법"
+    },
+    {
+      "id": "e1",
+      "fromNode": "three-holes",
+      "toNode": "netns",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "내부 구조"
+    },
+    {
+      "id": "e2",
+      "fromNode": "netns",
+      "toNode": "veth-bridge",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "잇는 통로"
+    },
+    {
+      "id": "e3",
+      "fromNode": "veth-bridge",
+      "toNode": "embedded-dns",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "user-defined일 때"
+    },
+    {
+      "id": "e4",
+      "fromNode": "embedded-dns",
+      "toNode": "host-internal",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "호스트는 별도 매핑"
+    },
+    {
+      "id": "e5",
+      "fromNode": "host-internal",
+      "toNode": "nginx-upstream",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "활용 사례"
+    },
+    {
+      "id": "e6",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e8",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e9",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e10",
+      "fromNode": "s5",
+      "toNode": "s6",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e11",
+      "fromNode": "nginx-upstream",
+      "toNode": "s5",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "L7에서 펼쳐짐"
+    },
+    {
+      "id": "e12",
+      "fromNode": "veth-bridge",
+      "toNode": "s4",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "L2 전송"
+    },
+    {
+      "id": "e13",
+      "fromNode": "host-internal",
+      "toNode": "s6",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "헤어핀 경로"
+    }
+  ]
+}
