@@ -10,6 +10,8 @@ topics:
   - nat
   - bridge
   - veth
+  - namespace
+  - embedded-dns
 tags:
   - docker
   - docker-compose
@@ -27,8 +29,9 @@ tags:
   - learning
 sources:
   - 019ec069-2ae8-7578-a16a-d3e2969da7e7
+  - 019ec072-f10d-70e5-9597-0f1ab71f3814
 created_at: '2026-06-13T10:00:41.177Z'
-updated_at: '2026-06-13T10:00:41.177Z'
+updated_at: '2026-06-13T10:13:38.074Z'
 ---
 > [!summary] TL;DR
 > 컨테이너는 격리된 작은 컴퓨터 — host와 단절돼 있고 그 벽을 뚫는 세 장치가 **port / volume / network**. `docker-compose`는 한 파일의 서비스를 자동으로 같은 user-defined bridge에 묶고, 내장 DNS(`127.0.0.11`)로 서비스 이름을 IP로 푼다. 내부 구조는 **network namespace + veth pair + bridge + iptables + embedded DNS**. 외부 트래픽은 [[port publishing]] → host 포트 bind → (맥은 Docker Desktop의 LinuxKit VM 경유) → VM iptables DNAT → veth/bridge → 컨테이너 도착 후 nginx가 **L7 라우팅**. `host.docker.internal:host-gateway`는 컨테이너에서 "내 맥(혹은 리눅스 host)"을 가리키게 해 주는 특수 매핑이라, 이 repo처럼 upstream을 `host.docker.internal:PORT`로 잡으면 컨테이너든 `yarn dev` 로컬 프로세스든 동일하게 도달한다.
@@ -397,6 +400,69 @@ VM 진입 시퀀스 재정리:
 
 [[canvas/Docker_컨테이너와_네트워킹_완전_이해.canvas|개념도]]
 
+## Part 1 — docker-compose는 내부적으로 어떻게 네트워킹을 하는가
+
+"같은 가상 네트워크에 자동으로 넣고 이름을 DNS로 쓴다"는 건 리눅스 커널 기능 4개의 조합입니다: [[network namespace]] + [[veth pair]] + [[bridge]] + [[iptables]] + embedded DNS.
+
+### (1) 격리의 정체 = network namespace
+
+컨테이너가 "자기만의 네트워크를 가진다"는 건 리눅스의 network namespace 덕분입니다. namespace는 커널이 제공하는 격리 단위로, 각 namespace는 자기만의 네트워크 인터페이스 목록, 라우팅 테이블, iptables 규칙, `/etc/hosts`·`resolv.conf`를 따로 가집니다.
+
+- host(맥북의 리눅스 VM)는 default namespace.
+- 컨테이너 하나당 새 namespace 하나.
+- 그래서 컨테이너 안에서 `ip addr`를 치면 host의 인터페이스가 안 보이고, 자기 것(`eth0`, `lo`)만 보입니다. 이게 "격리"의 물리적 실체예요.
+
+### (2) namespace끼리 선을 연결 = veth pair
+
+namespace는 기본적으로 외부와 단절돼 있으니, 케이블을 꽂아줘야 합니다. 그 케이블이 [[veth pair]](virtual ethernet pair)입니다. 랜선처럼 양 끝이 한 쌍이에요.
+
+```
+컨테이너 namespace              host namespace
+   eth0  ●━━━━━━━━━━━━━━━━━━━━━●  vethXXXX
+        (한쪽 끝)             (다른쪽 끝)
+```
+
+한쪽 끝에 들어간 패킷은 반대쪽 끝으로 그대로 나옵니다. 컨테이너 하나당 veth pair 하나가 생겨요.
+
+### (3) veth들을 한데 묶는 스위치 = bridge
+
+veth 케이블의 host쪽 끝들을 전부 하나의 소프트웨어 스위치에 꽂습니다. 그게 리눅스 [[bridge]](L2 스위치)예요. `docker compose up` 하면 compose가 프로젝트당 bridge 하나를 자동 생성합니다 — 보통 이름이 `<프로젝트명>_default` (host에서 `br-xxxxx`로 보임).
+
+```
+                ┌─────────── bridge: mvl_default (172.18.0.1) ───────────┐
+                │                                                         │
+  postgres ─veth─┤  nginx ─veth─┤  redis ─veth─┤  user-service ─veth─┤  ...
+  172.18.0.2     172.18.0.3      172.18.0.4      172.18.0.5
+```
+
+- compose가 서브넷(예: `172.18.0.0/16`)을 하나 할당하고, 각 컨테이너에 IP를 하나씩 줍니다.
+- bridge 자신도 IP(`172.18.0.1`)를 갖고, 이게 컨테이너들의 gateway가 됩니다. (← 이 IP가 뒤에 `host-gateway` 설명에서 다시 나옵니다. 기억해두세요.)
+- 같은 bridge에 꽂힌 컨테이너끼리는 L2로 직접 통신 가능. 그래서 별도 `networks:` 선언이 없어도 자동으로 서로 보입니다.
+
+"왜 자동으로 같은 네트워크에 들어가나?" = compose가 한 파일의 서비스 전부를 default bridge 하나에 꽂기 때문. 선언 ��� 해도 compose가 대신 해줍니다.
+
+### (4) 이름 → IP 변환 = embedded DNS (127.0.0.11)
+
+IP는 컨테이너 뜰 때마다 바뀌니, 이름으로 부를 수 있어야 합니다. docker는 각 컨테이너 namespace 안에 **내장 DNS 서버를 `127.0.0.11`에 띄웁니다.**
+
+컨테이너 안 `/etc/resolv.conf`를 보면:
+```
+nameserver 127.0.0.11
+```
+로 돼 있어요. 그래서 컨테이너가 `postgres`를 resolve하면:
+
+1. 쿼리가 `127.0.0.11`(docker 내장 DNS)로 감.
+2. docker는 이 네트워크에 속한 서비스/컨테이너 이름 → IP 매핑 테이블을 갖고 있어서, `postgres` → `172.18.0.2`로 응답.
+3. 만약 docker가 모르는 이름(google.com 등)이면, host의 실제 DNS로 forwarding해서 외부도 resolve.
+
+**중요한 함정**: 이 자동 DNS는 **user-defined network에서만** 동작합니다. docker의 옛날 기본 네트워크(`docker0`, "default bridge")에서는 이름 resolve가 안 돼요. 그런데 compose는 항상 user-defined network를 만들기 때문에 항상 이름 DNS가 됩니다. (그래서 `docker run`만 단독으로 쓸 때랑 동작이 다른 거예요.)
+
+내부적으로 `127.0.0.11`은 그냥 주소가 아니라, 컨테이너 namespace 안의 [[iptables]](NAT) 규칙이 그 트래픽을 docker 데몬이 관리하는 resolver로 redirect하는 구조입니다.
+
+### (5) 외부 인터넷으로 나갈 때 = iptables MASQUERADE (SNAT)
+
+컨테이너가 인터넷에 나갈 때는 출발지 IP가 사설 IP(`172.18.0.5`)라 그대로는 응답을 못 받습니다. 그래서 host의 iptables nat 테이블에 **MASQUERADE(SNAT) 규칙**이 있어서, 나가는 패킷의 출발지를 host IP로 바꿔치기합니다. 응답이 오면 [[conntrack]](연결 추적)이 원래 컨테이너로 되돌려줍니다.
+
 ---
 
 ## English
@@ -613,7 +679,7 @@ server {
 ```
 
 > [!note] `upstream user-service` is NOT a Docker DNS name
-> The `user-service` token in `nginx.conf` is just an **nginx upstream block label** ��� unrelated to Docker's embedded DNS. `proxy_pass http://user-service/` expands to that block's content (`server host.docker.internal:3000`). nginx never uses container DNS at all in this repo.
+> The `user-service` token in `nginx.conf` is just an **nginx upstream block label** — unrelated to Docker's embedded DNS. `proxy_pass http://user-service/` expands to that block's content (`server host.docker.internal:3000`). nginx never uses container DNS at all in this repo.
 
 #### Why "container" and "yarn dev" both work
 
@@ -761,3 +827,67 @@ Your sentence — "once inside the VM, iptables forwards to nginx and L7 starts 
 ## Diagram
 
 [[canvas/Docker_컨테이너와_네트워킹_완전_이해.canvas|Concept map]]
+
+## Part 1 — How docker-compose networks internally
+
+"Putting them all on the same virtual network automatically and using names as DNS" is a composition of four Linux kernel features: [[network namespace]] + [[veth pair]] + [[bridge]] + [[iptables]] + embedded DNS.
+
+### (1) The substance of isolation = network namespace
+
+A container "having its own network" is thanks to the Linux network namespace. A namespace is a kernel-provided isolation unit; each namespace has its own list of network interfaces, routing table, iptables rules, and `/etc/hosts` · `resolv.conf`.
+
+- The host (the Linux VM on the Mac) is the default namespace.
+- One new namespace per container.
+- That's why running `ip addr` inside a container shows none of the host's interfaces, only its own (`eth0`, `lo`). This is the physical reality of "isolation."
+
+### (2) Connecting namespaces with a wire = veth pair
+
+A namespace is by default cut off from the outside, so you need to plug a cable into it. That cable is a [[veth pair]] (virtual ethernet pair). Like a LAN cable, it's a pair of two ends.
+
+```
+container namespace             host namespace
+   eth0  ●━━━━━━━━━━━━━━━━━━━━━●  vethXXXX
+        (one end)              (the other end)
+```
+
+A packet entering one end comes out the other unchanged. One veth pair per container.
+
+### (3) The switch that bundles all the veths together = bridge
+
+You plug all the host-side ends of the veth cables into one software switch. That's the Linux [[bridge]] (L2 switch). When you run `docker compose up`, compose automatically creates one bridge per project — typically named `<project>_default` (visible as `br-xxxxx` on the host).
+
+```
+                ┌─────────── bridge: mvl_default (172.18.0.1) ───────────┐
+                │                                                         │
+  postgres ─veth─┤  nginx ─veth─┤  redis ─veth─┤  user-service ─veth─┤  ...
+  172.18.0.2     172.18.0.3      172.18.0.4      172.18.0.5
+```
+
+- compose allocates one subnet (e.g. `172.18.0.0/16`) and gives each container one IP.
+- The bridge itself has an IP (`172.18.0.1`), which becomes the containers' gateway. (← This IP will reappear later in the `host-gateway` discussion. Remember it.)
+- Containers plugged into the same bridge can communicate at L2 directly. That's why even without an explicit `networks:` declaration, they see each other automatically.
+
+"Why do they automatically end up on the same network?" = because compose plugs every service in one file into one default bridge. Even without declaring it, compose does it for you.
+
+### (4) Name → IP translation = embedded DNS (127.0.0.11)
+
+Since IPs change every time a container starts, you need to be able to call them by name. Docker **runs an embedded DNS server at `127.0.0.11`** inside each container's namespace.
+
+Inside the container, `/etc/resolv.conf` shows:
+```
+nameserver 127.0.0.11
+```
+
+So when a container resolves `postgres`:
+
+1. The query goes to `127.0.0.11` (docker's embedded DNS).
+2. Docker holds a name → IP mapping table for the services/containers on this network and responds with `postgres` → `172.18.0.2`.
+3. If the name isn't one docker knows (e.g. google.com), it forwards to the host's real DNS so external names also resolve.
+
+**Important catch**: This auto DNS works **only on user-defined networks**. On docker's old default network (`docker0`, "default bridge"), name resolution doesn't work. But compose always creates a user-defined network, so name DNS always works. (That's why behavior differs from using `docker run` alone.)
+
+Internally, `127.0.0.11` is not just an address — it's a structure where an [[iptables]] (NAT) rule inside the container namespace redirects that traffic to a resolver managed by the docker daemon.
+
+### (5) Going to the external internet = iptables MASQUERADE (SNAT)
+
+When a container goes out to the internet, its source IP is a private IP (`172.18.0.5`) and it can't receive replies as-is. So the host's iptables nat table has a **MASQUERADE (SNAT) rule** that rewrites the source of outgoing packets to the host's IP. When replies come back, [[conntrack]] (connection tracking) returns them to the original container.
