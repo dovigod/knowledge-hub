@@ -1,0 +1,4 @@
+*.kh.db
+*.kh.db-wal
+*.kh.db-shm
+.smart-env/
