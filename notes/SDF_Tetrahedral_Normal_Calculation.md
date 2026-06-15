@@ -11,8 +11,9 @@ topics:
   - glsl
 sources:
   - 019ecbc3-4e8b-75ed-8634-7f9f8cc4150d
+  - 019ecbe5-6eff-7006-a913-83414a4ebbb3
 created_at: '2026-06-15T14:53:04.269Z'
-updated_at: '2026-06-15T14:53:04.269Z'
+updated_at: '2026-06-15T15:31:00.928Z'
 ---
 In SDF, **Tetrahedral Normal Calculation** is one of the numerical differentiation techniques used to compute the gradient (∇f).
 
@@ -174,6 +175,129 @@ Intuitively,
 > while the Tetrahedral method measures slopes along the 4 directions of a regular tetrahedron and reconstructs the gradient using symmetry.
 
 That's why in [[Shadertoy]] or IQ's SDF renderers, `calcNormal()` frequently uses 4 tetrahedral directions.
+
+---
+
+## Normal = Normalized Gradient of SDF
+
+Stated simply:
+
+> **Normal = normalized gradient of the SDF**
+
+Mathematically:
+
+n = ∇d / ||∇d||
+
+where:
+
+- d(p): SDF value
+- ∇d: gradient of the distance function
+- n: normal vector
+
+---
+
+## Central Difference (GLSL)
+
+The most intuitive method. Move slightly around point p in each direction and measure the change in distance.
+
+```glsl
+vec3 calcNormal(vec3 p)
+{
+    float e = 0.001;
+
+    return normalize(vec3(
+        sdf(p + vec3(e,0,0)) - sdf(p - vec3(e,0,0)),
+        sdf(p + vec3(0,e,0)) - sdf(p - vec3(0,e,0)),
+        sdf(p + vec3(0,0,e)) - sdf(p - vec3(0,0,e))
+    ));
+}
+```
+
+This is the direct implementation of the gradient definition.
+
+∂d/∂x ≈ (d(x+h)-d(x-h))/(2h)
+
+---
+
+## IQ-style 4-sample Tetrahedral
+
+```glsl
+vec3 calcNormal(vec3 p)
+{
+    const float h = 0.0001;
+    const vec2 k = vec2(1,-1);
+
+    return normalize(
+        k.xyy * sdf(p + k.xyy*h) +
+        k.yyx * sdf(p + k.yyx*h) +
+        k.yxy * sdf(p + k.yxy*h) +
+        k.xxx * sdf(p + k.xxx*h)
+    );
+}
+```
+
+Directions used:
+(1,-1,-1)
+(-1,-1,1)
+(-1,1,-1)
+(1,1,1)
+
+These are the 4 vertex directions of a regular tetrahedron.
+
+The gradient is approximated with only 4 samples.
+
+---
+
+## Why 4 samples instead of 6?
+
+Central Difference:
++x, -x, +y, -y, +z, -z
+
+Total 6 SDF calls.
+
+Tetrahedral:
+Only 4 directions.
+
+Total 4 calls.
+
+In Ray Marching, SDF evaluation is expensive, so this saves about 33%.
+
+---
+
+## Analytic Normal (most accurate)
+
+Sphere:
+
+```glsl
+float sphereSDF(vec3 p)
+{
+    return length(p) - r;
+}
+```
+
+gradient:
+
+```glsl
+normalize(p)
+```
+
+The surface normal can be computed directly.
+
+If d(p) = ||p|| - r, then
+
+∇d = p / ||p||
+
+---
+
+## When to use each method
+
+In real [[Ray Marching]] renderers, typically:
+
+- Simple implementation → 6-sample Central Difference
+- Performance-critical → 4-sample Tetrahedral
+- Accuracy-critical → Analytic Gradient
+
+The tetrahedral version of `calcNormal` is best understood as an optimization technique that approximates the gradient with only 4 SDF evaluations.
 
 ---
 
@@ -347,3 +471,128 @@ h(4I)\nabla f
 > Tetrahedral 방식은 정사면체 4개 방향으로 기울기를 측정한 뒤 대칭성을 이용해 gradient를 복원하는 방식입니다.
 
 그래서 [[Shadertoy]]나 IQ의 SDF 렌더러에서 `calcNormal()`을 보면 정사면체 방향 4개를 사용하는 코드가 자주 등장합니다.
+
+---
+
+### 법선 = SDF의 gradient 정규화
+
+매우 간단히 말하면:
+
+> **법선 = SDF의 gradient(기울기)를 정규화한 것**
+
+입니다.
+
+수학적으로는:
+
+n = ∇d / ||∇d||
+
+여기서:
+
+- d(p): SDF 값
+- ∇d: 거리 함수의 gradient
+- n: 법선 벡터
+
+---
+
+### 가장 직관적인 방법 (Central Difference)
+
+점 p 주변을 아주 조금씩 이동해서 거리 변화량을 측정한다.
+
+```glsl
+vec3 calcNormal(vec3 p)
+{
+    float e = 0.001;
+
+    return normalize(vec3(
+        sdf(p + vec3(e,0,0)) - sdf(p - vec3(e,0,0)),
+        sdf(p + vec3(0,e,0)) - sdf(p - vec3(0,e,0)),
+        sdf(p + vec3(0,0,e)) - sdf(p - vec3(0,0,e))
+    ));
+}
+```
+
+gradient의 정의 그대로 구현한 것.
+
+∂d/∂x ≈ (d(x+h)-d(x-h))/(2h)
+
+---
+
+### IQ(Inigo Quilez) 스타일 4샘플 정사면체(Tetrahedral) 방식
+
+```glsl
+vec3 calcNormal(vec3 p)
+{
+    const float h = 0.0001;
+    const vec2 k = vec2(1,-1);
+
+    return normalize(
+        k.xyy * sdf(p + k.xyy*h) +
+        k.yyx * sdf(p + k.yyx*h) +
+        k.yxy * sdf(p + k.yxy*h) +
+        k.xxx * sdf(p + k.xxx*h)
+    );
+}
+```
+
+사용 방향:
+(1,-1,-1)
+(-1,-1,1)
+(-1,1,-1)
+(1,1,1)
+
+정사면체의 4개 꼭짓점 방향이다.
+
+gradient를 4번의 샘플만으로 근사한다.
+
+---
+
+### 왜 6샘플 대신 4샘플을 쓰나?
+
+Central Difference:
++x, -x, +y, -y, +z, -z
+
+총 6회 SDF 호출.
+
+Tetrahedral:
+4개 방향만 사용.
+
+총 4회 호출.
+
+Ray Marching에서는 SDF 평가가 비싸므로 약 33% 절약된다.
+
+---
+
+### Analytic Normal (가장 정확)
+
+구:
+
+```glsl
+float sphereSDF(vec3 p)
+{
+    return length(p) - r;
+}
+```
+
+gradient:
+
+```glsl
+normalize(p)
+```
+
+즉 표면 법선을 직접 계산 가능.
+
+d(p)=||p||-r 이면
+
+∇d = p/||p||
+
+---
+
+### 어느 방법을 언제 쓰는가
+
+실제 [[Ray Marching]] 렌더러에서는 보통:
+
+- 간단 구현 → 6샘플 Central Difference
+- 성능 중요 → 4샘플 Tetrahedral
+- 정확도 중요 → Analytic Gradient
+
+정사면체 버전 `calcNormal`은 gradient를 4번의 SDF 평가만으로 근사하는 최적화 기법이라고 이해하면 된다.
