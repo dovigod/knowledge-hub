@@ -1,0 +1,228 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/HTTP_타임아웃과_분산_시스템의_부분_실패.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "timeout_def",
+      "type": "text",
+      "text": "타임아웃 = 클라이언트의 인내심 한계 (네트워크 신호 아님)",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. SYN/SYN-ACK/ACK — 연결 수립",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. HTTP Request 전송 — 요청이 서버에 완전히 도달",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. 서버 처리 — DB write/결제/포인트 등 부수효과 실행",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. HTTP Response 반환 — 여기서 못 받으면 read timeout",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "two_generals",
+      "type": "text",
+      "text": "Two Generals Problem — 4가지 실패 상태 구분 불가",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "partial_failure",
+      "type": "text",
+      "text": "부분 실패: 클라는 실패, 서버는 성공으로 인지",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "scenario_c",
+      "type": "text",
+      "text": "예: client 30s < nginx 60s < app 90s → LB가 먼저 끊음",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "danger_retry",
+      "type": "text",
+      "text": "위험: 재시도 → 포인트 2번 지급/결제 중복/지갑 중복 생성",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "idempotency",
+      "type": "text",
+      "text": "멱등성 (Idempotency-Key) — 재시도해도 1회와 동일 결과",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "timeout_align",
+      "type": "text",
+      "text": "타임아웃 계층 정렬: app < nginx < LB < client",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "async_switch",
+      "type": "text",
+      "text": "비동기 전환: 202 Accepted + job ID, polling/webhook",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e1",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "s4",
+      "toNode": "timeout_def",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "응답 지연 시 발동"
+    },
+    {
+      "id": "e4",
+      "fromNode": "s3",
+      "toNode": "partial_failure",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "부수효과는 이미 발생"
+    },
+    {
+      "id": "e5",
+      "fromNode": "timeout_def",
+      "toNode": "partial_failure",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "초래"
+    },
+    {
+      "id": "e6",
+      "fromNode": "two_generals",
+      "toNode": "partial_failure",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "근본 원인"
+    },
+    {
+      "id": "e7",
+      "fromNode": "scenario_c",
+      "toNode": "partial_failure",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "발생 사례"
+    },
+    {
+      "id": "e8",
+      "fromNode": "partial_failure",
+      "toNode": "danger_retry",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "재시도 시"
+    },
+    {
+      "id": "e9",
+      "fromNode": "idempotency",
+      "toNode": "danger_retry",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "방지"
+    },
+    {
+      "id": "e10",
+      "fromNode": "timeout_align",
+      "toNode": "scenario_c",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "예방"
+    },
+    {
+      "id": "e11",
+      "fromNode": "async_switch",
+      "toNode": "s4",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "동기 응답 회피"
+    }
+  ]
+}
