@@ -1,0 +1,201 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/그릭_요거트_만드는_법.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "greek",
+      "type": "text",
+      "text": "그릭 요거트 = 유청 제거한 요거트 (꾸덕, 고단백)",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "starter",
+      "type": "text",
+      "text": "스타터 = 살아있는 유산균 든 플레인 요거트",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. 우유 80~85°C로 데우기 (단백질 변성)",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. 40~45°C로 식히기 (유산균 살리는 온도)",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. 플레인 요거트 100g 넣고 섞기",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. 40~45°C 유지하며 6~12시간 발효",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "5. 면보+체로 냉장고에서 유청 빼기",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "ferment_time",
+      "type": "text",
+      "text": "발효 시간: 6h 순한맛 / 8h 표준 / 12h 신맛 강함",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "drain_time",
+      "type": "text",
+      "text": "유청 빼기: 4h 표준 그릭 / 8h+ 크림치즈",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "whey",
+      "type": "text",
+      "text": "유청 = 수용성 단백질·미네랄 (스무디·빵에 활용)",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "shortcut",
+      "type": "text",
+      "text": "지름길: 시판 요거트만 4~8h 물 빼도 됨",
+      "x": 1200,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e1",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "starter",
+      "toNode": "s3",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "넣음"
+    },
+    {
+      "id": "e5",
+      "fromNode": "s4",
+      "toNode": "ferment_time",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "시간별 차이"
+    },
+    {
+      "id": "e6",
+      "fromNode": "s5",
+      "toNode": "drain_time",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "시간별 결과"
+    },
+    {
+      "id": "e7",
+      "fromNode": "s5",
+      "toNode": "whey",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "분리됨"
+    },
+    {
+      "id": "e8",
+      "fromNode": "s5",
+      "toNode": "greek",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "완성"
+    },
+    {
+      "id": "e9",
+      "fromNode": "shortcut",
+      "toNode": "greek",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "간이 버전"
+    }
+  ]
+}
