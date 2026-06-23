@@ -1,0 +1,261 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/Cilium과_ztunnel_eBPF_기반_CNI와_zero-trust_mTLS_터널.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "cni",
+      "type": "text",
+      "text": "CNI = Pod 네트워크 붙이는 표준 플러그인 규격",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "cilium",
+      "type": "text",
+      "text": "Cilium = eBPF로 패킷 처리하는 CNI",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ebpf",
+      "type": "text",
+      "text": "eBPF = 커널에 심는 작은 프로그램 (해시 조회로 즉시 판정)",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "mtls",
+      "type": "text",
+      "text": "mTLS = 양쪽 다 인증서로 신원 증명하는 TLS",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ztunnel",
+      "type": "text",
+      "text": "ztunnel = 노드당 1개 도는 사이드카 없는 zero-trust 프록시",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "secrets",
+      "type": "text",
+      "text": "cilium-ztunnel-secrets = mTLS 신뢰의 뿌리 CA",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "dataplane",
+      "type": "text",
+      "text": "data plane = 실제 패킷이 지나는 길 (Cilium이 곧 데이터플레인)",
+      "x": 600,
+      "y": 1320,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "guard",
+      "type": "text",
+      "text": "비유: 방마다 경비원(사이드카) vs 동마다 경비실(ztunnel)",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. eBPF가 Pod 나가는 패킷을 노드 ztunnel로 redirect",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. ztunnel끼리 CA 발급 인증서로 mTLS 핸드셰이크 + SPIFFE ID 검증",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. HBONE 터널로 암호화 트래픽 노드 간 전달",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. 상대 ztunnel 복호화 → eBPF가 목적지 Pod로 전달",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "cascade",
+      "type": "text",
+      "text": "부트스트랩 실패: 시크릿 없음 → agent 못 뜸 → CNI 없음 → NotReady cascade",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "cni",
+      "toNode": "cilium",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "구현체"
+    },
+    {
+      "id": "e1",
+      "fromNode": "ebpf",
+      "toNode": "cilium",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "기반 기술"
+    },
+    {
+      "id": "e2",
+      "fromNode": "mtls",
+      "toNode": "ztunnel",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "수행 기능"
+    },
+    {
+      "id": "e3",
+      "fromNode": "guard",
+      "toNode": "ztunnel",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "비유"
+    },
+    {
+      "id": "e4",
+      "fromNode": "cilium",
+      "toNode": "dataplane",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "곧 그 자체"
+    },
+    {
+      "id": "e5",
+      "fromNode": "ztunnel",
+      "toNode": "dataplane",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "암호화 담당"
+    },
+    {
+      "id": "e6",
+      "fromNode": "secrets",
+      "toNode": "mtls",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "신뢰 뿌리"
+    },
+    {
+      "id": "e7",
+      "fromNode": "cilium",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e8",
+      "fromNode": "ztunnel",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "트래픽 도착지"
+    },
+    {
+      "id": "e9",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e10",
+      "fromNode": "secrets",
+      "toNode": "s2",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "발급한 인증서로"
+    },
+    {
+      "id": "e11",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e12",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e13",
+      "fromNode": "secrets",
+      "toNode": "cascade",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "없으면"
+    },
+    {
+      "id": "e14",
+      "fromNode": "cascade",
+      "toNode": "dataplane",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "전체 붕괴"
+    }
+  ]
+}

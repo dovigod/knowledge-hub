@@ -1,0 +1,23 @@
+{
+  "nodes": [
+    {
+      "id": "note0",
+      "type": "file",
+      "file": "notes/Cilium과_ztunnel_eBPF_기반_CNI와_zero-trust_mTLS_터널.md",
+      "x": 0,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "note1",
+      "type": "file",
+      "file": "notes/네트워크_정책_레이어_L4_vs_L7.md",
+      "x": 640,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    }
+  ],
+  "edges": []
+}
