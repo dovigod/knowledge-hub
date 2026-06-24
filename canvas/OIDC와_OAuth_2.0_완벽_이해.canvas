@@ -1,0 +1,276 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/OIDC와_OAuth_2.0_완벽_이해.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "oauth",
+      "type": "text",
+      "text": "OAuth 2.0 = 인가 (앱이 리소스 접근 가능?)",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "oidc",
+      "type": "text",
+      "text": "OIDC = OAuth 2.0 + ID Token (사용자 누구?)",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "access_token",
+      "type": "text",
+      "text": "Access Token: API 접근용 (opaque/JWT)",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "id_token",
+      "type": "text",
+      "text": "ID Token: 신원 증명 (반드시 JWT)",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "jwt",
+      "type": "text",
+      "text": "JWT = Header.Payload.Signature (서명 기반 무결성)",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. /authorize 리다이렉트 (scope, state, PKCE, nonce)",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. 로그인 + 동의 → authorization code 발급",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "2-1. Discovery로 엔드포인트·jwks_uri 자동 획득",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "3. /token 교환 → Access + ID + Refresh Token",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "4. JWKS에서 kid로 공개키 조회 → 서명 검증",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s6",
+      "type": "text",
+      "text": "5. Claims 검증: iss / aud / exp / nonce",
+      "x": 0,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "bearer",
+      "type": "text",
+      "text": "Bearer Token 약점: 탈취되면 원 주인 행세 가능",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "rotation",
+      "type": "text",
+      "text": "Refresh Token Rotation + Reuse Detection (family 폐기)",
+      "x": 600,
+      "y": 1320,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "analogy",
+      "type": "text",
+      "text": "비유: Discovery=안내데스크, JWKS=열쇠보관함, kid=이름표",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "oauth",
+      "toNode": "oidc",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "확장"
+    },
+    {
+      "id": "e1",
+      "fromNode": "oauth",
+      "toNode": "access_token",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "발급"
+    },
+    {
+      "id": "e2",
+      "fromNode": "oidc",
+      "toNode": "id_token",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "추가 발급"
+    },
+    {
+      "id": "e3",
+      "fromNode": "id_token",
+      "toNode": "jwt",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "형식 강제"
+    },
+    {
+      "id": "e4",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "s2",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "s3",
+      "toNode": "s1",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "사전 부트스트랩"
+    },
+    {
+      "id": "e7",
+      "fromNode": "s4",
+      "toNode": "access_token",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e8",
+      "fromNode": "s4",
+      "toNode": "id_token",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e9",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "ID Token 검증"
+    },
+    {
+      "id": "e10",
+      "fromNode": "s5",
+      "toNode": "s6",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e11",
+      "fromNode": "jwt",
+      "toNode": "s5",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "서명 검증 대상"
+    },
+    {
+      "id": "e12",
+      "fromNode": "access_token",
+      "toNode": "bearer",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "Bearer 방식"
+    },
+    {
+      "id": "e13",
+      "fromNode": "bearer",
+      "toNode": "rotation",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "방어"
+    },
+    {
+      "id": "e14",
+      "fromNode": "s3",
+      "toNode": "analogy",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e15",
+      "fromNode": "s5",
+      "toNode": "analogy",
+      "fromSide": "right",
+      "toSide": "left"
+    }
+  ]
+}
