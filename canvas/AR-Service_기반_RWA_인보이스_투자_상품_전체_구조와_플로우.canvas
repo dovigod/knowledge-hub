@@ -1,0 +1,277 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/AR-Service_기반_RWA_인보이스_투자_상품_전체_구조와_플로우.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "actors",
+      "type": "text",
+      "text": "등장 인물 5명: 운영자·판매자·지급인·투자자·보증인",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "vaults",
+      "type": "text",
+      "text": "온체인 금고 3형제: Guarantor Vault·Purchase Escrow·Payback Escrow",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "invoice_fraction",
+      "type": "text",
+      "text": "Invoice = 토큰화된 매출채권, fractionCount개 조각(NFT)으로 분할",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "guarantee_axis",
+      "type": "text",
+      "text": "isGuaranteed 분기: coverageRatio(액면가%) vs fee(이익%)",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. 운영자가 Seller·Payer·Guarantor Registry 화이트리스트 등록",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. Contract 생성(붕어빵 틀) — 할부 N장의 메타 정의, payerConfirmation 필요",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. generateInvoices → Invoice N장 DRAFT 생성, APR 보간(maxApr→minApr)",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. confirmAllInvoices($transaction) → IPFS 업로드 → ipfsCid 획득",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "5. SC_REGISTER (Outbox 5회 재시도, %→bps ×100 변환)",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s6",
+      "type": "text",
+      "text": "6. (보증) GuaranteePosition 온체인 등록 → 전수 성공 시 진열 허용",
+      "x": 0,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s7",
+      "type": "text",
+      "text": "7. LISTED → 투자자가 조각 매입, 자금은 Purchase Escrow→판매자 조기 정산",
+      "x": 0,
+      "y": 1320,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s8",
+      "type": "text",
+      "text": "8. Payer 상환 → Payback Escrow 적립, ar-service가 delta만 paybackUsdc sync",
+      "x": 0,
+      "y": 1540,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s9",
+      "type": "text",
+      "text": "9. 만기 도래 → initiateRedeem(paymentStatus 무관), 부족 시 Vault에서 coverageRatio만큼 보전",
+      "x": 0,
+      "y": 1760,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "ex_tada",
+      "type": "text",
+      "text": "예: 메콩모터스(Seller)→소페아 TADA 기사(Payer) 300만 12개월, 지훈(Investor)+앙코르캐피탈(Guarantor)",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "ex_tada",
+      "toNode": "actors",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "구체 매핑"
+    },
+    {
+      "id": "e1",
+      "fromNode": "actors",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "신뢰 이전"
+    },
+    {
+      "id": "e2",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "invoice_fraction",
+      "toNode": "s3",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "조각화 정의"
+    },
+    {
+      "id": "e5",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "ipfsCid 필수"
+    },
+    {
+      "id": "e7",
+      "fromNode": "s5",
+      "toNode": "s7",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "비보증: 즉시"
+    },
+    {
+      "id": "e8",
+      "fromNode": "s5",
+      "toNode": "s6",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "보증 분기"
+    },
+    {
+      "id": "e9",
+      "fromNode": "guarantee_axis",
+      "toNode": "s6",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "조건부 단계"
+    },
+    {
+      "id": "e10",
+      "fromNode": "s6",
+      "toNode": "s7",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e11",
+      "fromNode": "vaults",
+      "toNode": "s7",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "Purchase Escrow"
+    },
+    {
+      "id": "e12",
+      "fromNode": "s7",
+      "toNode": "s8",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e13",
+      "fromNode": "vaults",
+      "toNode": "s8",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "Payback Escrow"
+    },
+    {
+      "id": "e14",
+      "fromNode": "s8",
+      "toNode": "s9",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e15",
+      "fromNode": "vaults",
+      "toNode": "s9",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "Guarantor Vault 인출"
+    }
+  ]
+}
