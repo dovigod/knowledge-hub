@@ -1,0 +1,141 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/Basic_Auth와_Base64_인코딩의_보안.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "http",
+      "type": "text",
+      "text": "HTTP = 평문 통신 프로토콜",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "basic_auth",
+      "type": "text",
+      "text": "Basic Auth = ID:PW를 Base64로 인코딩",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "base64",
+      "type": "text",
+      "text": "Base64 = 인코딩(암호화 아님), 디코드 가능",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "risk",
+      "type": "text",
+      "text": "평문 HTTP + Basic Auth → 자격증명 노출 위험",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "tls",
+      "type": "text",
+      "text": "TLS = 전송 구간 암호화 프로토콜",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "https",
+      "type": "text",
+      "text": "HTTPS = HTTP + TLS (보안 채널)",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "safe",
+      "type": "text",
+      "text": "HTTPS 위에서 Basic Auth → 전송 구간 보호",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "basic_auth",
+      "toNode": "base64",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "사용"
+    },
+    {
+      "id": "e1",
+      "fromNode": "base64",
+      "toNode": "risk",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "디코드 가능"
+    },
+    {
+      "id": "e2",
+      "fromNode": "http",
+      "toNode": "risk",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "평문 전송"
+    },
+    {
+      "id": "e3",
+      "fromNode": "tls",
+      "toNode": "https",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "결합"
+    },
+    {
+      "id": "e4",
+      "fromNode": "http",
+      "toNode": "https",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "보호"
+    },
+    {
+      "id": "e5",
+      "fromNode": "https",
+      "toNode": "safe",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "채널 암호화"
+    },
+    {
+      "id": "e6",
+      "fromNode": "basic_auth",
+      "toNode": "safe",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "함께 사용"
+    }
+  ]
+}

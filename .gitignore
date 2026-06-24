@@ -2,3 +2,9 @@
 *.kh.db-wal
 *.kh.db-shm
 .smart-env/
+
+
+
+
+# Ignore Smart Environment folder
+.smart-env

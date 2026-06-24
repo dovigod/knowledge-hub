@@ -1,0 +1,261 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/AWS_클라우드_인프라와_DockerEKS_배포_파이프라인.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "problem",
+      "type": "text",
+      "text": "문제: 노트북 끄면 서비스 죽음",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ecr",
+      "type": "text",
+      "text": "ECR = 사설 Docker 이미지 창고",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "eks",
+      "type": "text",
+      "text": "EKS = 컨테이너 실행/재시작/분배 관리자",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "pod",
+      "type": "text",
+      "text": "Pod = docker run 1개 (쿠버네티스 단위)",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. git push → GitHub Actions 빌드",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. docker push → ECR에 이미지 저장",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. Git의 image.tag 변경 (정답지 갱신)",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. ArgoCD가 Git ↔ 클러스터 동기화",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "5. Deployment → ReplicaSet → Pod N개 생성",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s6",
+      "type": "text",
+      "text": "6. kubelet이 IAM으로 ECR pull → 컨테이너 실행",
+      "x": 0,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s7",
+      "type": "text",
+      "text": "7. probe 통과 → Service → ALB → 사용자",
+      "x": 0,
+      "y": 1320,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "hpa",
+      "type": "text",
+      "text": "HPA: Pod 개수 자동 확장 (DB는 안 늘어남!)",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "karpenter",
+      "type": "text",
+      "text": "Karpenter: 노드 부족시 EC2 자동 추가",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "selfheal",
+      "type": "text",
+      "text": "예: Pod 죽으면 ReplicaSet이 즉시 새로 생성",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "problem",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "해결 시작"
+    },
+    {
+      "id": "e1",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "s5",
+      "toNode": "s6",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "s6",
+      "toNode": "s7",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "fromNode": "ecr",
+      "toNode": "s2",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "저장 대상"
+    },
+    {
+      "id": "e8",
+      "fromNode": "ecr",
+      "toNode": "s6",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "pull 소스"
+    },
+    {
+      "id": "e9",
+      "fromNode": "eks",
+      "toNode": "s5",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "실행 주체"
+    },
+    {
+      "id": "e10",
+      "fromNode": "pod",
+      "toNode": "s5",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "생성 단위"
+    },
+    {
+      "id": "e11",
+      "fromNode": "hpa",
+      "toNode": "s5",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "replicas 조절"
+    },
+    {
+      "id": "e12",
+      "fromNode": "karpenter",
+      "toNode": "s6",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "노드 확보"
+    },
+    {
+      "id": "e13",
+      "fromNode": "selfheal",
+      "toNode": "pod",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "자기복구 사례"
+    }
+  ]
+}

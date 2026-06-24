@@ -1,0 +1,226 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/Docker와_컨테이너_네트워킹.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "kernel",
+      "type": "text",
+      "text": "Linux 커널: namespaces + cgroups",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "docker",
+      "type": "text",
+      "text": "Docker = 커널 기능의 포장 (새 기술 아님)",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "vm_vs",
+      "type": "text",
+      "text": "VM(전체 OS) vs 컨테이너(커널 공유)",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "netns",
+      "type": "text",
+      "text": "NET namespace = 네트워크 스택 한 벌 복제",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "port3000",
+      "type": "text",
+      "text": "예: 두 컨테이너가 동시에 3000 포트 LISTEN 가능",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. -p 8080:3000 으로 호스트 창문 뚫기",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. 패킷이 docker0 브리지 + veth 통과",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. iptables DNAT: host:8080 → containerIP:3000",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. 컨테이너 안 app이 3000에서 수신",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "hijack",
+      "type": "text",
+      "text": "경로 장악: BGP/DNS/ARP/iptables 조작",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "mew",
+      "type": "text",
+      "text": "예: MyEtherWallet 2018 BGP 하이재킹",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "tls",
+      "type": "text",
+      "text": "TLS/mTLS: CA 서명으로 신원 검증 (마지막 방어선)",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "kernel",
+      "toNode": "docker",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "포장"
+    },
+    {
+      "id": "e1",
+      "fromNode": "docker",
+      "toNode": "vm_vs",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "kernel",
+      "toNode": "netns",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "포함"
+    },
+    {
+      "id": "e3",
+      "fromNode": "netns",
+      "toNode": "port3000",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "충돌 없음"
+    },
+    {
+      "id": "e4",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "fromNode": "netns",
+      "toNode": "s4",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "내부 포트 수신"
+    },
+    {
+      "id": "e8",
+      "fromNode": "s3",
+      "toNode": "hijack",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "NAT 경로 장악"
+    },
+    {
+      "id": "e9",
+      "fromNode": "hijack",
+      "toNode": "mew",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e10",
+      "fromNode": "hijack",
+      "toNode": "tls",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "막는 방어선"
+    },
+    {
+      "id": "e11",
+      "fromNode": "mew",
+      "toNode": "tls",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "TLS 무시 시 피해"
+    }
+  ]
+}

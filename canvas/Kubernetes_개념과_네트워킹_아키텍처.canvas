@@ -1,0 +1,261 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/Kubernetes_개념과_네트워킹_아키텍처.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "k8s",
+      "type": "text",
+      "text": "Kubernetes = 컨테이너 오케스트레이션 표준",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "pod",
+      "type": "text",
+      "text": "Pod = 최소 배포 단위 (netns 공유)",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "deploy",
+      "type": "text",
+      "text": "Deployment = 원하는 상태 유지 (replicas)",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "svc",
+      "type": "text",
+      "text": "Service = 가상 IP(VIP)로 Pod 그룹 진입점",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "primitives",
+      "type": "text",
+      "text": "리눅스 원시: netns + veth + iptables",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. 새 Pod 뜸 → kubelet이 Ready 보고",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. EndpointSlice에 Pod IP 자동 추가",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. kube-proxy가 watch로 변화 감지",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. 호스트 iptables 체인 갱신 (KUBE-SVC→SEP)",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "5. VIP 패킷 도착 → DNAT으로 Pod IP 변환",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s6",
+      "type": "text",
+      "text": "6. CNI(오버레이/BGP)가 노드 간 패킷 배달",
+      "x": 0,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "ebpf",
+      "type": "text",
+      "text": "Cilium/eBPF = iptables 대체, O(1) 해시맵",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ex_nginx",
+      "type": "text",
+      "text": "예: nginx 수동 reload는 IP 변동 못 따라감",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "k8s",
+      "toNode": "pod",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "포함"
+    },
+    {
+      "id": "e1",
+      "fromNode": "k8s",
+      "toNode": "deploy",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "포함"
+    },
+    {
+      "id": "e2",
+      "fromNode": "k8s",
+      "toNode": "svc",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "포함"
+    },
+    {
+      "id": "e3",
+      "fromNode": "deploy",
+      "toNode": "pod",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "관리"
+    },
+    {
+      "id": "e4",
+      "fromNode": "svc",
+      "toNode": "pod",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "VIP로 묶음"
+    },
+    {
+      "id": "e5",
+      "fromNode": "svc",
+      "toNode": "ex_nginx",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "해결"
+    },
+    {
+      "id": "e6",
+      "fromNode": "primitives",
+      "toNode": "pod",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "netns 격리"
+    },
+    {
+      "id": "e7",
+      "fromNode": "primitives",
+      "toNode": "s5",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "iptables DNAT 기반"
+    },
+    {
+      "id": "e8",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e9",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e10",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e11",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e12",
+      "fromNode": "s5",
+      "toNode": "s6",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "실제 운반"
+    },
+    {
+      "id": "e13",
+      "fromNode": "s4",
+      "toNode": "ebpf",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "대체"
+    },
+    {
+      "id": "e14",
+      "fromNode": "s6",
+      "toNode": "ebpf",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "통합"
+    }
+  ]
+}

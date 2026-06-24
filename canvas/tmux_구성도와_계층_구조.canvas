@@ -1,0 +1,201 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/tmux_구성도와_계층_구조.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "server",
+      "type": "text",
+      "text": "tmux Server (백그라운드 프로세스)",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "session",
+      "type": "text",
+      "text": "Session = 독립적인 작업 공간 (프로젝트 단위)",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "window",
+      "type": "text",
+      "text": "Window = 세션 안의 탭 (역할 단위)",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "pane",
+      "type": "text",
+      "text": "Pane = 윈도우를 분할한 실제 터미널",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "attach",
+      "type": "text",
+      "text": "Attach = 세션에 다시 연결 (tmux attach -t)",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "detach",
+      "type": "text",
+      "text": "Detach = 터미널만 분리, 세션은 유지 (Ctrl+b d)",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ex_server",
+      "type": "text",
+      "text": "예: tmux 실행 → ps aux | grep tmux 로 확인",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "ex_session",
+      "type": "text",
+      "text": "예: backend / frontend / monitoring 세션 분리",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "ex_window",
+      "type": "text",
+      "text": "예: Window 0=editor, 1=logs, 2=shell",
+      "x": 1200,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "ex_pane",
+      "type": "text",
+      "text": "예: editor 위 / build·logs 아래로 화면 분할",
+      "x": 1200,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "ex_ssh",
+      "type": "text",
+      "text": "예: SSH 끊겨도 세션은 살아있음",
+      "x": 1200,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "server",
+      "toNode": "session",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "포함"
+    },
+    {
+      "id": "e1",
+      "fromNode": "session",
+      "toNode": "window",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "포함"
+    },
+    {
+      "id": "e2",
+      "fromNode": "window",
+      "toNode": "pane",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "포함"
+    },
+    {
+      "id": "e3",
+      "fromNode": "server",
+      "toNode": "ex_server",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e4",
+      "fromNode": "session",
+      "toNode": "ex_session",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e5",
+      "fromNode": "window",
+      "toNode": "ex_window",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e6",
+      "fromNode": "pane",
+      "toNode": "ex_pane",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e7",
+      "fromNode": "session",
+      "toNode": "ex_ssh",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "지속성"
+    },
+    {
+      "id": "e8",
+      "fromNode": "attach",
+      "toNode": "session",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "연결"
+    },
+    {
+      "id": "e9",
+      "fromNode": "detach",
+      "toNode": "session",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "분리하되 유지"
+    }
+  ]
+}

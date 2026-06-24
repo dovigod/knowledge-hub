@@ -1,0 +1,199 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/SSH_프로토콜_개요와_연결_과정.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "ssh",
+      "type": "text",
+      "text": "SSH = 암호화된 원격 접속 프로토콜 (TCP 22)",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "asym",
+      "type": "text",
+      "text": "비대칭 암호 = 키 수립용 (느리지만 안전)",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "sym",
+      "type": "text",
+      "text": "대칭 암호 = 대량 전송용 (빠름, AES/ChaCha20)",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. 서버 인증: 호스트 공개키 제시 → known_hosts 대조",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. 키 교환: DH/ECDH로 세션 키 협상",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. 사용자 인증: 비밀번호 또는 공개키 서명 검증",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. 암호화된 세션 시작 (셸/SFTP/터널링)",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "tofu",
+      "type": "text",
+      "text": "TOFU = 첫 접속 시 호스트 키 신뢰",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "pubkey",
+      "type": "text",
+      "text": "공개키 인증: 챌린지에 개인키로 서명, 공개키로 검증",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "https",
+      "type": "text",
+      "text": "HTTPS 비교: CA 체인 사용 (SSH는 TOFU 기반)",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "ssh",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e1",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "s1",
+      "toNode": "tofu",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "미등록 시"
+    },
+    {
+      "id": "e5",
+      "fromNode": "asym",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "사용"
+    },
+    {
+      "id": "e6",
+      "fromNode": "asym",
+      "toNode": "s2",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "사용"
+    },
+    {
+      "id": "e7",
+      "fromNode": "s2",
+      "toNode": "sym",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "세션 키 수립"
+    },
+    {
+      "id": "e8",
+      "fromNode": "sym",
+      "toNode": "s4",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "트래픽 암호화"
+    },
+    {
+      "id": "e9",
+      "fromNode": "s3",
+      "toNode": "pubkey",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "권장 방식"
+    },
+    {
+      "id": "e10",
+      "fromNode": "ssh",
+      "toNode": "https",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "유사 패턴"
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/C++_CMake_빌드_시스템.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "problem",
+      "type": "text",
+      "text": "C++는 표준 빌드/패키지 시스템 없음",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "cmake",
+      "type": "text",
+      "text": "CMake = 빌드 시스템 생성기 (컴파일러 아님)",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "cmakelists",
+      "type": "text",
+      "text": "CMakeLists.txt (당신이 작성)",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. Configure: 스크립트 해석 + 컴파일러 탐지",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "graph",
+      "type": "text",
+      "text": "인메모리 타겟 DAG 구성 (app → mylib)",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "scope",
+      "type": "text",
+      "text": "PRIVATE/PUBLIC/INTERFACE = 속성 전파 범위",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "cache",
+      "type": "text",
+      "text": "CMakeCache.txt: 결과 캐시 (재설정 시 build/ 삭제)",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. Generate: 그래프 → 네이티브 빌드 파일",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "files",
+      "type": "text",
+      "text": "예: build.ninja / Makefile / .sln",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. Build: ninja/make가 실제 컴파일·링크",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "incremental",
+      "type": "text",
+      "text": "-MD로 헤더 의존성 추적 → 증분 빌드",
+      "x": 600,
+      "y": 1320,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "findpkg",
+      "type": "text",
+      "text": "find_package = fmtConfig.cmake 탐색 + IMPORTED 타겟",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "problem",
+      "toNode": "cmake",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "해결"
+    },
+    {
+      "id": "e1",
+      "fromNode": "cmakelists",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e2",
+      "fromNode": "cmake",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e3",
+      "fromNode": "s1",
+      "toNode": "graph",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "구축"
+    },
+    {
+      "id": "e4",
+      "fromNode": "s1",
+      "toNode": "cache",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "저장"
+    },
+    {
+      "id": "e5",
+      "fromNode": "scope",
+      "toNode": "graph",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "간선 따라 전파"
+    },
+    {
+      "id": "e6",
+      "fromNode": "findpkg",
+      "toNode": "graph",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "타겟 주입"
+    },
+    {
+      "id": "e7",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e8",
+      "fromNode": "graph",
+      "toNode": "s2",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "번역 입력"
+    },
+    {
+      "id": "e9",
+      "fromNode": "s2",
+      "toNode": "files",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e10",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e11",
+      "fromNode": "files",
+      "toNode": "s3",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "실행"
+    },
+    {
+      "id": "e12",
+      "fromNode": "s3",
+      "toNode": "incremental",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "활용"
+    }
+  ]
+}

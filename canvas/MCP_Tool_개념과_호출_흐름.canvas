@@ -1,0 +1,219 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/MCP_Tool_개념과_호출_흐름.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "tool",
+      "type": "text",
+      "text": "Tool = 서버가 노출하는 실행 가능한 함수",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "def",
+      "type": "text",
+      "text": "정의: 이름 + 설명 + 입력 스키마(JSON Schema)",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "model_ctrl",
+      "type": "text",
+      "text": "Model-controlled: LLM이 스스로 호출 판단",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "resources",
+      "type": "text",
+      "text": "Resources — 읽기 전용 컨텍스트 데이터",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "prompts",
+      "type": "text",
+      "text": "Prompts — 사용자가 선택하는 템플릿",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. 클라이언트가 tools/list 요청",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. 서버가 tool 목록 + 스키마 반환",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. LLM이 설명 읽고 호출 결정",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. tools/call 요청 (이름 + 인자) 전송",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "5. 서버가 함수 실행 후 결과 반환",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "example",
+      "type": "text",
+      "text": "예: archive_conversation (mcp-server.ts)",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "ex_effect",
+      "type": "text",
+      "text": "vault에 md 쓰기 + SQLite row + extract job 큐잉",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "tool",
+      "toNode": "def",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "구성 요소"
+    },
+    {
+      "id": "e1",
+      "fromNode": "tool",
+      "toNode": "model_ctrl",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "특징"
+    },
+    {
+      "id": "e2",
+      "fromNode": "model_ctrl",
+      "toNode": "resources",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "vs"
+    },
+    {
+      "id": "e3",
+      "fromNode": "model_ctrl",
+      "toNode": "prompts",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "vs"
+    },
+    {
+      "id": "e4",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e8",
+      "fromNode": "def",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "스키마 노출"
+    },
+    {
+      "id": "e9",
+      "fromNode": "tool",
+      "toNode": "example",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "실제 사례"
+    },
+    {
+      "id": "e10",
+      "fromNode": "s5",
+      "toNode": "ex_effect",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "side effect 예시"
+    }
+  ]
+}

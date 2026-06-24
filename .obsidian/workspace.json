@@ -1,0 +1,262 @@
+{
+  "main": {
+    "id": "ae9383879c7f77b9",
+    "type": "split",
+    "children": [
+      {
+        "id": "d054065dc1555987",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "84b190bc3289ae45",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "notes/AWS_클라우드_인프라와_DockerEKS_배포_파이프라인.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "AWS_클라우드_인프라와_DockerEKS_배포_파이프라인"
+            }
+          },
+          {
+            "id": "237a5daee5cc4a57",
+            "type": "leaf",
+            "state": {
+              "type": "smart-release-notes-view",
+              "state": {},
+              "icon": "file-text",
+              "title": "Release Notes"
+            }
+          },
+          {
+            "id": "c332047059bb77d8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "notes/ar-service_인보이스_투자_상품_플로우.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ar-service_인보이스_투자_상품_플로우"
+            }
+          }
+        ],
+        "currentTab": 2
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "b2705430d767bda4",
+    "type": "split",
+    "children": [
+      {
+        "id": "a67d7fffa2d0cc14",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a2886ce731e6d5c4",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "파일 탐색기"
+            }
+          },
+          {
+            "id": "bf967cd1628deff8",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "검색"
+            }
+          },
+          {
+            "id": "44815460cf43b52c",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "북마크"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "7ba6c1a9df8008c4",
+    "type": "split",
+    "children": [
+      {
+        "id": "13c9321024e5d86e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4ad7053d11722c82",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "raw/conversations/2026/06/019ecbc3-4e8b-75ed-8634-7f9f8cc4150d.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "019ecbc3-4e8b-75ed-8634-7f9f8cc4150d 의 백링크"
+            }
+          },
+          {
+            "id": "c73bdeb85f2fa556",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "raw/conversations/2026/06/019ecbc3-4e8b-75ed-8634-7f9f8cc4150d.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "019ecbc3-4e8b-75ed-8634-7f9f8cc4150d 의 나가는 링크"
+            }
+          },
+          {
+            "id": "aa1a635bb410d05f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "태그"
+            }
+          },
+          {
+            "id": "d0e6c2e8e0bf18df",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "모든 속성"
+            }
+          },
+          {
+            "id": "e782548a9155fd6c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "raw/conversations/2026/06/019ecbc3-4e8b-75ed-8634-7f9f8cc4150d.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "019ecbc3-4e8b-75ed-8634-7f9f8cc4150d 의 개요"
+            }
+          },
+          {
+            "id": "a7edd26865946f5f",
+            "type": "leaf",
+            "state": {
+              "type": "smart-connections-view",
+              "state": {},
+              "icon": "smart-connections",
+              "title": "Connections"
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:빠른 전환기 열기": false,
+      "graph:그래프 뷰 열기": false,
+      "canvas:새 캔버스 만들기": false,
+      "daily-notes:오늘의 일일 노트 열기": false,
+      "templates:템플릿 삽입": false,
+      "command-palette:명령어 팔레트 열기": false,
+      "bases:새 베이스 생성하기": false,
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "smart-connections:Smart Connections: Open connections view": false,
+      "smart-connections:Toggle Footer Connections": false,
+      "smart-connections:Smart Connections: Open random connection": false
+    }
+  },
+  "active": "c332047059bb77d8",
+  "lastOpenFiles": [
+    "raw/conversations/2026/06/019ef370-2e84-701d-b3b9-7f3dab509e36.md",
+    "raw/conversations/2026/06/019ee9ab-572d-74df-ba60-a94f5226ad68.md",
+    "notes/AWS_클라우드_인프라와_DockerEKS_배포_파이프라인.md",
+    "raw/conversations/2026/06/019ec072-f10d-70e5-9597-0f1ab71f3814.md",
+    "notes/OIDC와_OAuth_2.0_완벽_이해.md",
+    "notes/QPS_(Query_Per_Second)_개념.md",
+    "notes/Redis_개요와_사용_사례.md",
+    "notes/tmux_구성도와_계층_구조.md",
+    "raw/conversations/2026/06/019ef25a-24bd-71ab-9f50-91d36bb5ea6b.md",
+    "notes/Cilium과_ztunnel_eBPF_기반_CNI와_zero-trust_mTLS_터널.md",
+    "notes/AR-Service_기반_RWA_인보이스_투자_상품_전체_구조와_플로우.md",
+    "canvas/AR-Service_기반_RWA_인보이스_투자_상품_전체_구조와_플로우.canvas",
+    "notes/ar-service_인보이스_투자_상품_플로우.md",
+    "canvas/ar-service_인보이스_투자_상품_플로우.canvas",
+    "canvas/019ee9bd-1fb4-73da-805f-c3e5b14f1b38.canvas",
+    "notes/분산_시스템_멱등성과_블록체인_트랜잭션_재시도.md",
+    "canvas/분산_시스템_멱등성과_블록체인_트랜잭션_재시도.canvas",
+    "notes/백엔드_워크플로우_오케스트레이션과_이벤트_소싱.md",
+    "notes/SSH_프로토콜_개요와_연결_과정.md",
+    "canvas/OIDC와_OAuth_2.0_완벽_이해.canvas",
+    "canvas/백엔드_워크플로우_오케스트레이션과_이벤트_소싱.canvas",
+    "canvas/019ed89a-6333-736b-a257-45a8581f1a66.canvas",
+    "notes/네트워크_정책_레이어_L4_vs_L7.md",
+    "canvas/Cilium과_ztunnel_eBPF_기반_CNI와_zero-trust_mTLS_터널.canvas",
+    "notes/Redis_연결_프로토콜과_TLS_(rediss).md",
+    "notes/SDF_Tetrahedral_Normal_Calculation.md",
+    "notes/Kubernetes_개념과_네트워킹_아키텍처.md",
+    "notes/HTTP_vs_gRPC_vs_MQ_비교.md",
+    "notes/HTTP_타임아웃과_분산_시스템의_부분_실패.md",
+    "notes/Basic_Auth와_Base64_인코딩의_보안.md",
+    "notes/인도식_난(Naan)_만드는_방법.md",
+    "notes/의사_결정_프레임워크_—_트레이드오프_분석과_본질_문제_인식.md",
+    "notes/비대칭_암호화와_HTTPS.md",
+    "notes/네트워크_하이재킹_공격과_TLS_방어.md"
+  ]
+}
