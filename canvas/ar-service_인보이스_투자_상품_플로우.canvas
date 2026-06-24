@@ -1,0 +1,252 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/ar-service_인보이스_투자_상품_플로우.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "binding",
+      "type": "text",
+      "text": "토큰화 대상 = 매출채권(AR), 차량 아님",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "asymmetry",
+      "type": "text",
+      "text": "비대칭 통화: 투자자=USDC만, Payer=현금 가능",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ipfs_meta",
+      "type": "text",
+      "text": "예: IPFS 메타 = faceValue/maturityDate/seller/payer/contractId",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. Seller/Payer/(Guarantor) 등록 → DB ACTIVE 즉시, 온체인 비동기",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. Contract DRAFT + payerConfirmation=RECEIVED",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. generateInvoices 호출 → 4-게이트 통과 → invoice DRAFT",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. invoice SC 등록 → onchainStatus=CONFIRMED → LISTED (마켓 오픈)",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "5. Investor가 POST /ar/investor로 자가등록 → 즉시 ACTIVE",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s6",
+      "type": "text",
+      "text": "6. POST /ar/purchase → 5+1 게이트 통과 → USDC가 Purchase Escrow로",
+      "x": 0,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s7",
+      "type": "text",
+      "text": "7. 만기: Payer 상환 → Payback Escrow에 USDC 적재",
+      "x": 0,
+      "y": 1320,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s8",
+      "type": "text",
+      "text": "8. redeem(txHash 필수) → FractionsRedeemed 이벤트 → 투자자 USDC 수령",
+      "x": 0,
+      "y": 1540,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "guarantor",
+      "type": "text",
+      "text": "Guarantor Vault: 디폴트 시 충당, 수수료는 '투자자 이익>0'일 때만",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "partial",
+      "type": "text",
+      "text": "예: PARTIAL_REDEEM = 보증 한도 부족 시 일부만 지급, fee=0",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "binding",
+      "toNode": "ipfs_meta",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "구체화"
+    },
+    {
+      "id": "e1",
+      "fromNode": "binding",
+      "toNode": "s3",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "토큰화 대상 결정"
+    },
+    {
+      "id": "e2",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "마켓 오픈 후"
+    },
+    {
+      "id": "e6",
+      "fromNode": "s5",
+      "toNode": "s6",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "fromNode": "s6",
+      "toNode": "s7",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "만기까지 대기"
+    },
+    {
+      "id": "e8",
+      "fromNode": "s7",
+      "toNode": "s8",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e9",
+      "fromNode": "asymmetry",
+      "toNode": "s6",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "구매=USDC"
+    },
+    {
+      "id": "e10",
+      "fromNode": "asymmetry",
+      "toNode": "s7",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "Payer만 현금 OK"
+    },
+    {
+      "id": "e11",
+      "fromNode": "asymmetry",
+      "toNode": "s8",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "수령=USDC only"
+    },
+    {
+      "id": "e12",
+      "fromNode": "guarantor",
+      "toNode": "s8",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "이익>0이면 수수료 차감"
+    },
+    {
+      "id": "e13",
+      "fromNode": "guarantor",
+      "toNode": "partial",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "한도 부족 시"
+    }
+  ]
+}
