@@ -1,0 +1,284 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/분산_시스템_멱등성과_블록체인_트랜잭션_재시도.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "unknown",
+      "type": "text",
+      "text": "Unknown Outcome: 성공·실패 아닌 '모름' 상태",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "http_example",
+      "type": "text",
+      "text": "예: 결제 200 OK 응답이 유실 → 사용자 재시도 → 이중 청구",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "idem_key",
+      "type": "text",
+      "text": "Idempotency Key: 클라가 생성한 UUID/ULID",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. 클라가 키 생성 후 헤더에 담아 전송",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. 서버가 키로 UPSERT (IN_PROGRESS → DONE)",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. 재시도 시 저장된 response 그대로 반환",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "rpc_limit",
+      "type": "text",
+      "text": "RPC 노드는 idempotency key를 모름 → 키 무력화",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "txhash",
+      "type": "text",
+      "text": "txHash = keccak256(signedTx), 서명 시점에 미리 계산 가능",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "nonce",
+      "type": "text",
+      "text": "nonce: 계정별 순차 카운터, 재서명 시 hash 변경",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "double_pay_example",
+      "type": "text",
+      "text": "예: 타임아웃 후 재서명 → 두 tx 모두 채굴 → 200 USDC 유출",
+      "x": 1200,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    },
+    {
+      "id": "t1",
+      "type": "text",
+      "text": "1. Nonce Manager가 nonce 직렬 할당",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "t2",
+      "type": "text",
+      "text": "2. 서명 후 rawTx+txHash를 DB에 저장 (broadcast 전)",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "t3",
+      "type": "text",
+      "text": "3. eth_sendRawTransaction 호출",
+      "x": 0,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "t4",
+      "type": "text",
+      "text": "4. 재시도는 동일 rawTx 재전송 (재서명 금지)",
+      "x": 0,
+      "y": 1320,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "t5",
+      "type": "text",
+      "text": "5. Confirmer가 txHash로 체인 조회 → 수렴",
+      "x": 0,
+      "y": 1540,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "unknown",
+      "toNode": "http_example",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "e1",
+      "fromNode": "unknown",
+      "toNode": "idem_key",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "해결 도구"
+    },
+    {
+      "id": "e2",
+      "fromNode": "idem_key",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e3",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "idem_key",
+      "toNode": "rpc_limit",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "경계 밖에선"
+    },
+    {
+      "id": "e6",
+      "fromNode": "rpc_limit",
+      "toNode": "txhash",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "대체 식별자"
+    },
+    {
+      "id": "e7",
+      "fromNode": "rpc_limit",
+      "toNode": "nonce",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "공유 자원"
+    },
+    {
+      "id": "e8",
+      "fromNode": "nonce",
+      "toNode": "double_pay_example",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "재서명 위험"
+    },
+    {
+      "id": "e9",
+      "fromNode": "txhash",
+      "toNode": "t1",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e10",
+      "fromNode": "nonce",
+      "toNode": "t1",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e11",
+      "fromNode": "t1",
+      "toNode": "t2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e12",
+      "fromNode": "t2",
+      "toNode": "t3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e13",
+      "fromNode": "t3",
+      "toNode": "t4",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "타임아웃 시"
+    },
+    {
+      "id": "e14",
+      "fromNode": "t4",
+      "toNode": "t5",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e15",
+      "fromNode": "t5",
+      "toNode": "unknown",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "안전하게 수렴"
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/백엔드_워크플로우_오케스트레이션과_이벤트_소싱.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "orch",
+      "type": "text",
+      "text": "오케스트레이션 = 분기·재시도·타임아웃을 지휘",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "sm",
+      "type": "text",
+      "text": "상태 머신/워크플로우 엔진 = 분기를 코드로 표현 (XState, Temporal)",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "cst",
+      "type": "text",
+      "text": "Current State Table = '지금 어디까지' 빠른 조회용 캐시",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "evlog",
+      "type": "text",
+      "text": "Event Log Table = '어떻게 여기까지' 불변 사실 (진실의 원천)",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "dd",
+      "type": "text",
+      "text": "Datadog 로그 = 관측용 (best-effort, 7~30일, 재생 불가)",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ou",
+      "type": "text",
+      "text": "Outcome Unknown = 성공도 실패도 아닌 제3의 상태",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "idem",
+      "type": "text",
+      "text": "3계층 키: Idempotency-Key / request_id / tx_hash",
+      "x": 600,
+      "y": 1320,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. 요청 수신 → deposit_request INSERT (idempotency_key 체크)",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. nonce 예약 + rawTx 서명 + tx_hash 계산",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. DB에 raw_tx·nonce·tx_hash 먼저 저장 (status=broadcasting)",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. sendRawTransaction 호출 → 타임아웃 시 status=outcome_unknown",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "5. Reconciler가 tx_hash로 체인 폴링 → confirmed/reverted로 수렴",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "ex",
+      "type": "text",
+      "text": "예: 출금 중 RPC 타임아웃 → 30분 뒤 콜백 도착해도 events로 정확 복원",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "orch",
+      "toNode": "sm",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "코드로 표현"
+    },
+    {
+      "id": "e1",
+      "fromNode": "sm",
+      "toNode": "cst",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "영속화"
+    },
+    {
+      "id": "e2",
+      "fromNode": "sm",
+      "toNode": "evlog",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "이벤트 append"
+    },
+    {
+      "id": "e3",
+      "fromNode": "evlog",
+      "toNode": "cst",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "fold/project"
+    },
+    {
+      "id": "e4",
+      "fromNode": "evlog",
+      "toNode": "dd",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "역할 분리"
+    },
+    {
+      "id": "e5",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e8",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "결과 확정"
+    },
+    {
+      "id": "e9",
+      "fromNode": "idem",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "재시도 흡수"
+    },
+    {
+      "id": "e10",
+      "fromNode": "ou",
+      "toNode": "s4",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "이 상태로 기록"
+    },
+    {
+      "id": "e11",
+      "fromNode": "ou",
+      "toNode": "s5",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "reconciler가 해소"
+    },
+    {
+      "id": "e12",
+      "fromNode": "evlog",
+      "toNode": "ex",
+      "fromSide": "right",
+      "toSide": "left",
+      "label": "재생 가능성"
+    }
+  ]
+}

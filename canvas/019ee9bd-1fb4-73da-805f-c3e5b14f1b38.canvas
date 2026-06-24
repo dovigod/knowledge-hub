@@ -1,0 +1,23 @@
+{
+  "nodes": [
+    {
+      "id": "note0",
+      "type": "file",
+      "file": "notes/백엔드_워크플로우_오케스트레이션과_이벤트_소싱.md",
+      "x": 0,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "note1",
+      "type": "file",
+      "file": "notes/분산_시스템_멱등성과_블록체인_트랜잭션_재시도.md",
+      "x": 640,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    }
+  ],
+  "edges": []
+}
