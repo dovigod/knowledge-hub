@@ -1,0 +1,249 @@
+{
+  "nodes": [
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/ECDSA와_Paillier_기반_Two-Party_Signing_원리.md",
+      "x": -740,
+      "y": 0,
+      "width": 520,
+      "height": 640
+    },
+    {
+      "id": "split",
+      "type": "text",
+      "text": "곱셈 분할: x=key1·key2, k=k1·k2",
+      "x": 600,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "ecdsa",
+      "type": "text",
+      "text": "ECDSA 서명식: s = k⁻¹·(hm + r·x)",
+      "x": 600,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "crossterm",
+      "type": "text",
+      "text": "교차항 r·key1·key2 — 평문 교환 불가 지점",
+      "x": 600,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "paillier",
+      "type": "text",
+      "text": "Paillier 동형암호: ⊕ 덧셈, ⊗ 평문 스칼라 곱",
+      "x": 600,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "text": "1. main이 key1·G 점을 sub로 보내 Q=x·G 합성",
+      "x": 0,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "text": "2. R 만들기: sub가 k2·G 송신 → main이 k1 곱해 r=(k·G).x",
+      "x": 0,
+      "y": 220,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s3",
+      "type": "text",
+      "text": "3. main이 cKey=Enc_pk1(key1) 암호화 후 sub로 송신",
+      "x": 0,
+      "y": 440,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s4",
+      "type": "text",
+      "text": "4. sub가 ⊗·⊕로 partialS = Enc(k2⁻¹·hm + k2⁻¹·r·key1·key2) 생성",
+      "x": 0,
+      "y": 660,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "s5",
+      "type": "text",
+      "text": "5. main이 sk1로 복호화 후 k1⁻¹ 곱해 s 완성",
+      "x": 0,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "4"
+    },
+    {
+      "id": "ecdlp",
+      "type": "text",
+      "text": "ECDLP: k·G 보고 k 역산 불가 → 점 교환은 안전",
+      "x": 600,
+      "y": 880,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "asymkey",
+      "type": "text",
+      "text": "Paillier sk1은 main만 보유 (비대칭 키 배치)",
+      "x": 600,
+      "y": 1100,
+      "width": 460,
+      "height": 160,
+      "color": "6"
+    },
+    {
+      "id": "example",
+      "type": "text",
+      "text": "N=143 예시: 430¹⁰=4291=Enc(30), partialS=5578 → s=3",
+      "x": 1200,
+      "y": 0,
+      "width": 460,
+      "height": 160,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "split",
+      "toNode": "ecdsa",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "대입"
+    },
+    {
+      "id": "e1",
+      "fromNode": "ecdsa",
+      "toNode": "crossterm",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "전개 시 발생"
+    },
+    {
+      "id": "e2",
+      "fromNode": "crossterm",
+      "toNode": "paillier",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "해결 도구"
+    },
+    {
+      "id": "e3",
+      "fromNode": "split",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e4",
+      "fromNode": "ecdlp",
+      "toNode": "s1",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "점 곱셈으로 안전"
+    },
+    {
+      "id": "e5",
+      "fromNode": "s1",
+      "toNode": "s2",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "ecdlp",
+      "toNode": "s2",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "k2·G 노출 OK"
+    },
+    {
+      "id": "e7",
+      "fromNode": "s2",
+      "toNode": "s3",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e8",
+      "fromNode": "paillier",
+      "toNode": "s3",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "e9",
+      "fromNode": "s3",
+      "toNode": "s4",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e10",
+      "fromNode": "asymkey",
+      "toNode": "s4",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "sub는 복호화 불가"
+    },
+    {
+      "id": "e11",
+      "fromNode": "s4",
+      "toNode": "s5",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e12",
+      "fromNode": "asymkey",
+      "toNode": "s5",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "main만 sk1 보유"
+    },
+    {
+      "id": "e13",
+      "fromNode": "example",
+      "toNode": "s4",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "구체 수치"
+    },
+    {
+      "id": "e14",
+      "fromNode": "example",
+      "toNode": "s5",
+      "fromSide": "left",
+      "toSide": "right",
+      "label": "구체 수치"
+    }
+  ]
+}
